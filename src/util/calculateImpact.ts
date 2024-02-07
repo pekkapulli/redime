@@ -1,10 +1,10 @@
 import { ConnectivityMethod, ContentType, DeviceType } from "../types";
 
 const DEVICE_POWER: Record<DeviceType, number> = {
-  phone: 1,
-  tablet: 3,
-  pc: 115,
-  laptop: 32,
+  Phone: 1,
+  Tablet: 3,
+  PC: 115,
+  Laptop: 32,
 };
 const DATA_VOLUME_TEXT = 8000000; // in bytes
 const DATA_VOLUME_VIDEO = 1100000; // in bytes per second
@@ -18,14 +18,14 @@ const POWER_LIGHTBULB = 11;
 const CAR_EMISSIONS = 0.20864;
 
 const getPDevice = (deviceType: DeviceType, contentType: ContentType) => {
-  if (contentType === "video") {
+  if (contentType === "Video") {
     return DEVICE_POWER[deviceType] * 1.15;
   }
   return DEVICE_POWER[deviceType];
 };
 
 const getDataVolume = (contentType: ContentType, durationSecs: number) => {
-  if (contentType === "video") {
+  if (contentType === "Video") {
     return durationSecs * DATA_VOLUME_VIDEO;
   } else {
     return DATA_VOLUME_TEXT;
@@ -47,17 +47,33 @@ const getEAccNet = (
   }
 };
 
+const calculateComparisonValues = (
+  carbon: number,
+  eTotalJoule: number,
+  durationSecs: number
+) => {
+  // kg per km
+  const drivingMetersPetrolCar = (carbon / CAR_EMISSIONS) * 1000;
+
+  const lightBulbsDuration = eTotalJoule / (POWER_LIGHTBULB * durationSecs);
+
+  return {
+    drivingMetersPetrolCar,
+    lightBulbsDuration,
+  };
+};
+
 export const calculateImpact = (
   deviceType: DeviceType,
   contentType: ContentType,
   connectivityMethod: ConnectivityMethod,
-  duration: number // in minutes
+  durationInSeconds: number // in seconds
 ) => {
-  const durationSecs = duration * 60;
+  const durationInMinutes = durationInSeconds / 60;
   const pDevice = getPDevice(deviceType, contentType);
-  const pageLoads = contentType === "video" ? 1 : duration;
+  const pageLoads = contentType === "Video" ? 1 : durationInMinutes;
 
-  const dataVolume = getDataVolume(contentType, durationSecs);
+  const dataVolume = getDataVolume(contentType, durationInSeconds);
 
   const eServ = (E_ORIGIN_PER_REQUEST + 6.9e-6 * dataVolume) * pageLoads;
   const eNetwork = E_NETWORK_COEFF * dataVolume * pageLoads;
@@ -66,16 +82,20 @@ export const calculateImpact = (
     connectivityMethod,
     dataVolume,
     pageLoads,
-    durationSecs
+    durationInSeconds
   );
 
-  const eUser = pDevice * durationSecs;
+  const eUser = pDevice * durationInSeconds;
   const eTotalJoule = eServ + eNetwork + eAccNet + eUser;
 
   const eTotalWh = eTotalJoule / 3600;
   const carbon = CARBON_COEFF * eTotalWh;
-  const drivingMetersPetrolCar = (carbon / CAR_EMISSIONS) * 1000;
-  const lightBulbsDuration = eTotalJoule / (POWER_LIGHTBULB * durationSecs);
 
-  return [eTotalWh, carbon, drivingMetersPetrolCar, lightBulbsDuration];
+  const comparisonValues = calculateComparisonValues(
+    carbon,
+    eTotalJoule,
+    durationInSeconds
+  );
+
+  return { eTotalWh, carbon, comparisonValues };
 };

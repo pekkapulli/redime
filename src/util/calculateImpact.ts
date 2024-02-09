@@ -1,4 +1,10 @@
-import { ConnectivityMethod, ContentType, DeviceType } from "../types";
+import {
+  Calculation,
+  ConnectivityMethod,
+  ContentType,
+  DeviceType,
+  EnergyAndCarbon,
+} from "../types";
 
 const DEVICE_POWER: Record<DeviceType, number> = {
   Phone: 1,
@@ -16,6 +22,16 @@ const E_ACC_NET_3G = 4.55e-5;
 const CARBON_COEFF = 0.525;
 const POWER_LIGHTBULB = 11;
 const CAR_EMISSIONS = 0.20864;
+
+const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
+  const totalEnergyConsumptionWh = energyInJoules / 3600;
+  const carbon = CARBON_COEFF * totalEnergyConsumptionWh;
+
+  return {
+    kWhEnergy: totalEnergyConsumptionWh,
+    carbon,
+  };
+};
 
 const getDeviceEnergyConsumption = (
   deviceType: DeviceType,
@@ -51,11 +67,16 @@ const getDataTransferEnergyConsumption = (
   }
 };
 
+export interface ComparisonValues {
+  drivingMetersPetrolCar: number;
+  lightBulbsDuration: number;
+}
+
 const calculateComparisonValues = (
   carbon: number,
   eTotalJoule: number,
   durationSecs: number
-) => {
+): ComparisonValues => {
   // kg per km
   const drivingMetersPetrolCar = (carbon / CAR_EMISSIONS) * 1000;
 
@@ -85,7 +106,7 @@ export const calculatePageLoadImpact = (
   deviceType: DeviceType,
   connectivityMethod: ConnectivityMethod,
   dataVolume: number
-) => {
+): Calculation => {
   const deviceEnergyConsumption = getDeviceEnergyConsumption(deviceType);
 
   const durationInSeconds = 5; // an unbased assumption about page load time
@@ -109,16 +130,24 @@ export const calculatePageLoadImpact = (
     dataTransferEnergyConsumption +
     energyOfUse;
 
-  const totalEnergyConsumptionWh = eTotalJoule / 3600;
-  const carbon = CARBON_COEFF * totalEnergyConsumptionWh;
+  const totalEnergyAndCarbon = getEnergyAndCarbon(eTotalJoule);
 
   const comparisonValues = calculateComparisonValues(
-    carbon,
+    totalEnergyAndCarbon.carbon,
     eTotalJoule,
     durationInSeconds
   );
 
-  return { totalEnergyConsumptionWh, carbon, comparisonValues };
+  return {
+    total: getEnergyAndCarbon(eTotalJoule),
+    comparisonValues,
+    serverEnergyConsumption: getEnergyAndCarbon(serverEnergyConsumption),
+    networkEnergyConsumption: getEnergyAndCarbon(networkEnergyConsumption),
+    dataTransferEnergyConsumption: getEnergyAndCarbon(
+      dataTransferEnergyConsumption
+    ),
+    energyOfUse: getEnergyAndCarbon(energyOfUse),
+  };
 };
 
 /**
@@ -129,7 +158,7 @@ export const calculateUseImpact = (
   contentType: ContentType,
   connectivityMethod: ConnectivityMethod,
   durationInSeconds: number
-) => {
+): Calculation => {
   const deviceEnergyConsumption = getDeviceEnergyConsumption(
     deviceType,
     contentType
@@ -160,16 +189,24 @@ export const calculateUseImpact = (
     dataTransferEnergyConsumption +
     energyOfUse;
 
-  const totalEnergyConsumptionWh = eTotalJoule / 3600;
-  const carbon = CARBON_COEFF * totalEnergyConsumptionWh;
+  const totalEnergyAndCarbon = getEnergyAndCarbon(eTotalJoule);
 
   const comparisonValues = calculateComparisonValues(
-    carbon,
+    totalEnergyAndCarbon.carbon,
     eTotalJoule,
     durationInSeconds
   );
 
-  return { totalEnergyConsumptionWh, carbon, comparisonValues };
+  return {
+    total: getEnergyAndCarbon(eTotalJoule),
+    comparisonValues,
+    serverEnergyConsumption: getEnergyAndCarbon(serverEnergyConsumption),
+    networkEnergyConsumption: getEnergyAndCarbon(networkEnergyConsumption),
+    dataTransferEnergyConsumption: getEnergyAndCarbon(
+      dataTransferEnergyConsumption
+    ),
+    energyOfUse: getEnergyAndCarbon(energyOfUse),
+  };
 };
 
 /*
@@ -181,7 +218,7 @@ export const calculateImpact = (
   contentType: ContentType,
   connectivityMethod: ConnectivityMethod,
   durationInSeconds: number
-) => {
+): Calculation => {
   const deviceEnergyConsumption = getDeviceEnergyConsumption(
     deviceType,
     contentType
@@ -215,14 +252,22 @@ export const calculateImpact = (
     dataTransferEnergyConsumption +
     energyOfUse;
 
-  const totalEnergyConsumptionWh = eTotalJoule / 3600;
-  const carbon = CARBON_COEFF * totalEnergyConsumptionWh;
+  const totalEnergyAndCarbon = getEnergyAndCarbon(eTotalJoule);
 
   const comparisonValues = calculateComparisonValues(
-    carbon,
+    totalEnergyAndCarbon.carbon,
     eTotalJoule,
     durationInSeconds
   );
 
-  return { totalEnergyConsumptionWh, carbon, comparisonValues };
+  return {
+    total: getEnergyAndCarbon(eTotalJoule),
+    comparisonValues,
+    serverEnergyConsumption: getEnergyAndCarbon(serverEnergyConsumption),
+    networkEnergyConsumption: getEnergyAndCarbon(networkEnergyConsumption),
+    dataTransferEnergyConsumption: getEnergyAndCarbon(
+      dataTransferEnergyConsumption
+    ),
+    energyOfUse: getEnergyAndCarbon(energyOfUse),
+  };
 };

@@ -12,3 +12,24 @@ export interface Params {
   connectivityMethod: ConnectivityMethod;
   contentType: ContentType;
 }
+
+// Results
+
+export type EnergyAndCarbon = {
+  kWhEnergy: number;
+  carbon: number;
+};
+
+export interface Calculation {
+  total: EnergyAndCarbon;
+  comparisonValues: ComparisonValues;
+  serverEnergyConsumption: EnergyAndCarbon;
+  networkEnergyConsumption: EnergyAndCarbon;
+  dataTransferEnergyConsumption: EnergyAndCarbon;
+  energyOfUse: EnergyAndCarbon;
+}
+
+export interface ComparisonValues {
+  drivingMetersPetrolCar: number;
+  lightBulbsDuration: number;
+}

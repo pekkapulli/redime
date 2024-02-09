@@ -1,12 +1,13 @@
-import { Params } from "../types";
+import styled from "styled-components";
 import { calculateImpact } from "../util/calculateImpact";
 import { useDeepMemo } from "../util/useDeepMemo";
+import { useContext } from "react";
+import { ParamsContext } from "../contexts/ParamsContext";
 
-interface ResultsProps {
-  params: Params;
-}
+const ResultsContainer = styled.div``;
 
-const Results = ({ params }: ResultsProps) => {
+const Results = () => {
+  const { params } = useContext(ParamsContext);
   const [impact] = useDeepMemo(() => {
     return [
       calculateImpact(
@@ -18,7 +19,7 @@ const Results = ({ params }: ResultsProps) => {
     ];
   }, [params]);
 
-  return <div>{impact.carbon}</div>;
+  return <ResultsContainer>{impact.total.carbon}</ResultsContainer>;
 };
 
 export default Results;

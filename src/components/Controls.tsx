@@ -3,26 +3,27 @@ import {
   ConnectivityMethod,
   ContentType,
   DeviceType,
-  Params,
   allConnectivityMethods,
   allContentTypes,
   allDeviceTypes,
 } from "../types";
 import { Selector, SelectorLabel } from "./common-components";
-
-interface ControlsProps {
-  params: Params;
-  updateParams: (newParams: Partial<Params>) => void;
-}
+import styled from "styled-components";
+import { useContext } from "react";
+import { ParamsContext } from "../contexts/ParamsContext";
 
 const getOption = <T,>(option: T) => ({
   label: option,
   value: option,
 });
 
-const Controls = ({ params, updateParams }: ControlsProps) => {
+const ControlsContainer = styled.div``;
+
+const Controls = () => {
+  const { params, updateParams } = useContext(ParamsContext);
+
   return (
-    <div>
+    <ControlsContainer>
       <Selector>
         <SelectorLabel>Device</SelectorLabel>
         <Select
@@ -54,7 +55,7 @@ const Controls = ({ params, updateParams }: ControlsProps) => {
           value={getOption(params.contentType)}
         />
       </Selector>
-    </div>
+    </ControlsContainer>
   );
 };
 

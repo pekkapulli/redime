@@ -7,17 +7,32 @@ export type ConnectivityMethod = (typeof allConnectivityMethods)[number];
 export const allContentTypes = ["Video", "Text"] as const;
 export type ContentType = (typeof allContentTypes)[number];
 
+export const allSites = ["HS", "Yle", "Areena"] as const;
+export type Site = (typeof allSites)[number];
+
 export interface Params {
   deviceType: DeviceType;
   connectivityMethod: ConnectivityMethod;
   contentType: ContentType;
 }
 
+export interface ArticleSimulationParams {
+  site: Site;
+  articleType: ContentType;
+  videoLengthInMinutes: number;
+  optimizeVideo: boolean;
+  autoplay: boolean;
+  textAlt: boolean;
+  percentageOfUsersPlayingVideo: number;
+  percentageOfMobileUsers: number;
+  users: number;
+}
+
 // Results
 
 export type EnergyAndCarbon = {
-  kWhEnergy: number;
-  carbon: number;
+  totalEnergyConsumptionWh: number;
+  carbonGrams: number;
 };
 
 export interface Calculation {

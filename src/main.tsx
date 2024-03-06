@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./routes/Root";
-import MainPage from "./routes/MainPage";
 import Article from "./routes/Article";
 
 export const router = createBrowserRouter([
@@ -13,10 +12,6 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MainPage />,
-      },
-      {
-        path: "/article/",
         element: <Article />,
       },
     ],

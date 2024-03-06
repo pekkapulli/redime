@@ -31,6 +31,8 @@ const grey = (step: number): string => {
 export const colors = {
   black: "black",
   white: "#ffffff",
+  green: "#779D35",
+  darkGreen: "#2E410C",
   grey,
 };
 

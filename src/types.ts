@@ -4,7 +4,7 @@ export type DeviceType = (typeof allDeviceTypes)[number];
 export const allConnectivityMethods = ["3G", "WIFI"] as const;
 export type ConnectivityMethod = (typeof allConnectivityMethods)[number];
 
-export const allContentTypes = ["Video", "Text"] as const;
+export const allContentTypes = ["Text", "Video", "Audio"] as const;
 export type ContentType = (typeof allContentTypes)[number];
 
 export const allSites = ["HS", "Yle", "Areena"] as const;
@@ -23,7 +23,7 @@ export interface ArticleSimulationParams {
   optimizeVideo: boolean;
   autoplay: boolean;
   textAlt: boolean;
-  percentageOfUsersPlayingVideo: number;
+  percentageOfUsersPlayingStreamContent: number;
   percentageOfMobileUsers: number;
   users: number;
 }

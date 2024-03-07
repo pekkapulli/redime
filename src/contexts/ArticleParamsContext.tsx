@@ -11,7 +11,7 @@ export const initialArticleSimulationParams: ArticleSimulationParams = {
   percentageOfMobileUsers: 80,
   articleType: "Video",
   users: 10000,
-  percentageOfUsersPlayingVideo: 60,
+  percentageOfUsersPlayingStreamContent: 60,
   autoplay: true,
   optimizeVideo: false,
   site: "HS",

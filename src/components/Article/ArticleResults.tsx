@@ -12,7 +12,6 @@ const Results = () => {
   const [impact] = useDeepMemo(() => {
     return [simulateArticleFootprint(params)];
   }, [params]);
-  console.log(impact);
 
   return (
     <ResultsContainer>

@@ -88,27 +88,30 @@ const Controls = () => {
                 updateParams({ optimizeVideo: !params.optimizeVideo })
               }
             />
-            <SelectorLabel horizontal>Optimize video</SelectorLabel>
+            <SelectorLabel horizontal>Optimize video (on phones)</SelectorLabel>
           </Selector>
           <Selector horizontal>
             <CheckboxInput
               checked={params.autoplay}
               handleClick={() => updateParams({ autoplay: !params.autoplay })}
             />
-            <SelectorLabel horizontal>Video autoplay</SelectorLabel>
+            <SelectorLabel horizontal>Autoplay</SelectorLabel>
           </Selector>
-          <Selector>
-            <SelectorLabel>
-              Percentage of users who open video (if not on autoplay)
-            </SelectorLabel>
-            <SliderInput
-              value={params.percentageOfUsersPlayingVideo}
-              onChange={(value) =>
-                updateParams({ percentageOfUsersPlayingVideo: value })
-              }
-              showNumberInput
-            />
-          </Selector>
+          {!params.autoplay && (
+            <Selector>
+              <SelectorLabel>
+                Percentage of users who play streamed content (if not on
+                autoplay)
+              </SelectorLabel>
+              <SliderInput
+                value={params.percentageOfUsersPlayingStreamContent}
+                onChange={(value) =>
+                  updateParams({ percentageOfUsersPlayingStreamContent: value })
+                }
+                showNumberInput
+              />
+            </Selector>
+          )}
         </>
       )}
 

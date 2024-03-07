@@ -4,6 +4,7 @@ import {
   ContentType,
   DeviceType,
   EnergyAndCarbon,
+  Site,
 } from "../types";
 import { multiplyCalculation } from "./calculationUtils";
 
@@ -13,9 +14,12 @@ const DEVICE_POWER: Record<DeviceType, number> = {
   PC: 115,
   Laptop: 32,
 };
-const DATA_VOLUME_TEXT = 8000000; // in bytes
-const DATA_VOLUME_VIDEO = 1100000; // in bytes per second // TODO: Check rates
-const DATA_VOLUME_VIDEO_OPTIMIZED = DATA_VOLUME_VIDEO / 3; // TODO: Check rates
+const DATA_VOLUME_TEXT = 8000000; // in bytes TODO: what unit is this?
+const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000; // in bits per second (fairly standard 720p rate)
+const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785; // in bits per second, measured from a Sanoma video
+const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450; // in bits per second, measured from an Yle video
+const DATA_VOLUME_AUDIO_PER_S = 128000;
+const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 2000000; // TODO: Check rates
 const E_ORIGIN_PER_REQUEST = 306;
 const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
@@ -48,12 +52,28 @@ const getDeviceEnergyConsumption = (
 const getDataVolume = (
   contentType: ContentType,
   durationSecs: number,
-  optimizeVideo: boolean
+  optimizeVideo: boolean,
+  site: Site
 ) => {
+  if (contentType === "Audio") {
+    return durationSecs * DATA_VOLUME_AUDIO_PER_S;
+  }
   if (contentType === "Video") {
+    let bitRate = DATA_VOLUME_VIDEO_PER_S_DEFAULT;
+    switch (site) {
+      case "Areena":
+      case "Yle":
+        bitRate = DATA_VOLUME_VIDEO_PER_S_YLE;
+        break;
+      case "HS":
+        bitRate = DATA_VOLUME_VIDEO_PER_S_SANOMA;
+        break;
+      default:
+        break;
+    }
     return (
       durationSecs *
-      (optimizeVideo ? DATA_VOLUME_VIDEO_OPTIMIZED : DATA_VOLUME_VIDEO)
+      (optimizeVideo ? DATA_VOLUME_VIDEO_OPTIMIZED_PER_S : bitRate)
     );
   } else {
     return DATA_VOLUME_TEXT;
@@ -116,6 +136,7 @@ export interface PageLoadParams {
   connectivityMethod: ConnectivityMethod;
   dataVolume: number;
   userAmount: number;
+  site: Site;
 }
 
 export const calculatePageLoadImpact = (
@@ -175,6 +196,7 @@ export interface PageUseParams {
   durationInSeconds: number;
   optimizeVideo: boolean;
   userAmount: number;
+  site: Site;
 }
 
 export type CalculationParams = PageLoadParams | PageUseParams;
@@ -190,6 +212,7 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
     durationInSeconds,
     optimizeVideo,
     userAmount,
+    site,
   } = params;
 
   const deviceEnergyConsumption = getDeviceEnergyConsumption(
@@ -198,13 +221,13 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
   );
 
   const dataVolume =
-    contentType === "Video"
-      ? getDataVolume(contentType, durationInSeconds, optimizeVideo)
+    contentType !== "Text"
+      ? getDataVolume(contentType, durationInSeconds, optimizeVideo, site)
       : 0;
 
   // Use of text content assumes 0 loaded bytes
   const serverEnergyConsumption =
-    contentType === "Video" ? calculateServerEnergyConsumption(dataVolume) : 0;
+    contentType !== "Text" ? calculateServerEnergyConsumption(dataVolume) : 0;
 
   const networkEnergyConsumption =
     calculateNetworkEnergyConsumption(dataVolume);

@@ -20,18 +20,18 @@ interface SimulationParameters {
   useParams: PageUseParams;
 }
 
-const getVideoPlayChance = (
-  hasVideo: boolean,
+const getStreamContentPlayChance = (
+  hasStreamContent: boolean,
   autoPlay: boolean,
-  percentageOfUsersPlayingVideo: number
+  percentageOfUsersPlayingStreamContent: number
 ) => {
-  if (!hasVideo) {
+  if (!hasStreamContent) {
     return 0;
   }
   if (autoPlay) {
     return 1;
   }
-  return percentageOfUsersPlayingVideo / 100;
+  return percentageOfUsersPlayingStreamContent / 100;
 };
 
 const getAmount = (users: number, chances: number[]) =>
@@ -46,16 +46,16 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
     autoplay,
     optimizeVideo,
     percentageOfMobileUsers,
-    percentageOfUsersPlayingVideo,
+    percentageOfUsersPlayingStreamContent,
     users,
     videoLengthInMinutes,
   } = params;
 
-  const hasVideo = articleType === "Video";
-  const videoPlayChance = getVideoPlayChance(
-    hasVideo,
+  const hasStreamContent = articleType !== "Text";
+  const streamContentPlayChance = getStreamContentPlayChance(
+    hasStreamContent,
     autoplay,
-    percentageOfUsersPlayingVideo
+    percentageOfUsersPlayingStreamContent
   );
 
   const calculations: SimulationParameters[] = [];
@@ -67,8 +67,8 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
       const connectivityMethod = mobileSimulationState ? "3G" : "WIFI"; // TODO: Not accurate
 
       const videoPlaySimulationMatch = playVideoSimulationState
-        ? videoPlayChance
-        : 1 - videoPlayChance;
+        ? streamContentPlayChance
+        : 1 - streamContentPlayChance;
       const userGroupMatch = mobileSimulationState
         ? percentageOfMobileUsers / 100
         : 1 - percentageOfMobileUsers / 100;
@@ -85,8 +85,9 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
         loadParams: {
           connectivityMethod,
           deviceType,
-          dataVolume: hasVideo ? 8000000 : 10000000,
+          dataVolume: hasStreamContent ? 8000000 : 10000000, // TODO: not accurate
           userAmount: amount,
+          site,
         },
         useParams: {
           connectivityMethod,
@@ -94,11 +95,12 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
           contentType: playVideoSimulationState ? "Video" : "Text",
           // assume it takes a minute to read the article
           durationInSeconds:
-            hasVideo && playVideoSimulationState
+            hasStreamContent && playVideoSimulationState
               ? videoLengthInMinutes * 60
               : 60,
           optimizeVideo: optimizeVideo && deviceType === "Phone",
           userAmount: amount,
+          site,
         },
       });
     });
@@ -108,7 +110,6 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
     const pageLoadImpact = calculatePageLoadImpact(calcParams.loadParams);
     const pageUseImpact = calculatePageUseImpact(calcParams.useParams);
     const totalImpact = combineCalculations([pageLoadImpact, pageUseImpact]);
-    console.log(totalImpact);
     return {
       params: calcParams,
       pageLoadImpact,

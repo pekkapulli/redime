@@ -25,6 +25,9 @@ const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
 const E_ACC_NET_3G = 4.55e-5;
 // const E_ACC_NET_5G = WIFI_ENERGY_PER_S * 0.1; //claims that its 90% more efficient than WiFi;
+const E_ACC_NET_4G = 0.117 * 3.6e6 / 1e9; // kWh/GB to Joules/byte for 4G
+const E_ACC_NET_5G = 0.501 * 3.6e6 / 1e9; // kWh/GB to Joules/byte for 5G
+
 const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
 const POWER_LIGHTBULB = 11;
 const CAR_EMISSIONS = 0.20864;
@@ -82,17 +85,21 @@ const getDataVolume = (
 
 const getDataTransferEnergyConsumption = (
   connectivityMethod: ConnectivityMethod,
-  dataVolume: number,
+  dataVolume: number, // Adjusted to be consistent with byte calculations
   pageLoads: number,
   durationSecs: number
 ) => {
-  if (connectivityMethod === "3G") {
-    return E_ACC_NET_3G * dataVolume * pageLoads;
-    // Let's add 4G/5G when calculations are ready:
-    // } else if (connectivityMethod === "5G") {
-    //   return E_ACC_NET_5G * durationSecs;
-  } else {
-    return WIFI_ENERGY_PER_S * durationSecs;
+  switch (connectivityMethod) {
+    case "3G":
+      return E_ACC_NET_3G * dataVolume * pageLoads;
+    case "4G":
+      return E_ACC_NET_4G * dataVolume * pageLoads; // Using 4G consumption rate
+    case "5G":
+      return E_ACC_NET_5G * dataVolume * pageLoads; // Using 5G consumption rate
+    case "WIFI":
+      return WIFI_ENERGY_PER_S * durationSecs;
+    default:
+      return 0;
   }
 };
 

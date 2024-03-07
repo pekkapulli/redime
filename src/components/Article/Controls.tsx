@@ -77,6 +77,37 @@ const Controls = () => {
         />
         <SelectorLabel horizontal>Optimize video</SelectorLabel>
       </Selector>
+      <Selector horizontal>
+        <CheckboxInput
+          checked={params.autoplay}
+          handleClick={() => updateParams({ autoplay: !params.autoplay })}
+        />
+        <SelectorLabel horizontal>Video autoplay</SelectorLabel>
+      </Selector>
+      <Selector>
+        <SelectorLabel>
+          Percentage of users who open video (if not on autoplay)
+        </SelectorLabel>
+        <NumberInput
+          min={0}
+          max={100}
+          step={1}
+          value={params.percentageOfUsersPlayingVideo}
+          onChange={(value) =>
+            updateParams({ percentageOfUsersPlayingVideo: value })
+          }
+        />
+      </Selector>
+      <Selector>
+        <SelectorLabel>Percentage of mobile users</SelectorLabel>
+        <NumberInput
+          min={0}
+          max={100}
+          step={1}
+          value={params.percentageOfMobileUsers}
+          onChange={(value) => updateParams({ percentageOfMobileUsers: value })}
+        />
+      </Selector>
     </ControlsContainer>
   );
 };

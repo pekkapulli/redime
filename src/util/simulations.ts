@@ -75,13 +75,6 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
 
       const deviceType = mobileSimulationState ? "Phone" : "Laptop";
 
-      console.log(
-        deviceType,
-        playVideoSimulationState ? "Plays video," : "Doesn't play video,",
-        videoPlaySimulationMatch,
-        userGroupMatch
-      );
-
       const amount = getAmount(users, [
         videoPlaySimulationMatch,
         userGroupMatch,

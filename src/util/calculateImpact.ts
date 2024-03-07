@@ -19,7 +19,7 @@ const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000; // in bits per second (fairly s
 const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785; // in bits per second, measured from a Sanoma video
 const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450; // in bits per second, measured from an Yle video
 const DATA_VOLUME_AUDIO_PER_S = 128000;
-const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000; // TODO: Check rates
+const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000; // https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate
 const E_ORIGIN_PER_REQUEST = 306;
 const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;

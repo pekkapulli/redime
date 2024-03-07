@@ -3,6 +3,7 @@ import { theme } from "../theme";
 
 export const Selector = styled.div<{ horizontal?: boolean }>`
   margin-top: ${theme.spacing(2)};
+  margin-bottom: ${theme.spacing(2)};
   display: flex;
   width: 100%;
   ${theme.fontSize(-1)};
@@ -32,6 +33,7 @@ export const SectionTitle = styled.h2`
   ${theme.fontSize(2)};
 `;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const P = styled.p`
   ${theme.fontNormal};
   ${theme.fontSize(0)};

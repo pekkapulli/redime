@@ -12,7 +12,10 @@ const CustomCheckmark = styled.div<CheckMarkProps>`
   height: 24px;
   width: 25px;
   background-color: ${(p) => (p.checked ? theme.colors.darkGreen : "white")};
-  border: ${(p) => (p.checked ? "0" : `1px solid ${theme.colors.grey(3)}`)};
+  border: ${(p) =>
+    p.checked
+      ? `1px solid ${theme.colors.darkGreen}`
+      : `1px solid ${theme.colors.grey(3)}`};
   cursor: pointer;
   border-radius: 4px;
   display: flex;

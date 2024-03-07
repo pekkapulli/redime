@@ -7,7 +7,7 @@ export const SelectorInput = styled.input`
   border: 1px solid
     ${(p) => (p.disabled ? theme.colors.grey(3) : theme.colors.grey(3))};
   border-radius: 4px;
-  height: 40px;
+  height: 24px;
   ${theme.fontSize(-1)};
   color: ${(p) => (p.disabled ? theme.colors.grey(2) : theme.colors.darkGreen)};
   background-color: ${(p) =>

@@ -51,7 +51,7 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
     videoLengthInMinutes,
   } = params;
 
-  const hasVideo = site === "Areena" || articleType === "Video";
+  const hasVideo = articleType === "Video";
   const videoPlayChance = getVideoPlayChance(
     hasVideo,
     autoplay,
@@ -92,6 +92,7 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
           connectivityMethod,
           deviceType,
           contentType: playVideoSimulationState ? "Video" : "Text",
+          // assume it takes a minute to read the article
           durationInSeconds:
             hasVideo && playVideoSimulationState
               ? videoLengthInMinutes * 60

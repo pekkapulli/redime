@@ -1,4 +1,3 @@
-import Select from "react-select";
 import { ContentType, Site, allContentTypes, allSites } from "../../types";
 import { SectionTitle, Selector, SelectorLabel } from "../common-components";
 import styled from "styled-components";
@@ -7,6 +6,8 @@ import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
 import { breakpoints, theme } from "../../theme";
 import { NumberInput } from "../generic/NumberInput";
 import { CheckboxInput } from "../generic/CheckboxInput";
+import OptionsSelector from "../generic/OptionsSelector";
+import SliderInput from "../generic/SliderInput";
 
 const getOption = <T,>(option: T) => ({
   label: option,
@@ -24,6 +25,8 @@ const ControlsContainer = styled.div`
   }
 `;
 
+const forcedContentSites: Site[] = ["Areena"];
+
 const Controls = () => {
   const { params, updateParams } = useContext(ArticleParamsContext);
 
@@ -31,23 +34,29 @@ const Controls = () => {
     <ControlsContainer>
       <SectionTitle>Options</SectionTitle>
       <Selector>
-        <SelectorLabel>Device</SelectorLabel>
-        <Select
+        <SelectorLabel>Site</SelectorLabel>
+        <OptionsSelector
           options={allSites.map(getOption<Site>)}
-          onChange={(newValue) =>
-            newValue !== null && updateParams({ site: newValue.value })
-          }
-          value={getOption(params.site)}
+          onChange={(newValue) => {
+            const forcedContentType: ContentType | undefined =
+              newValue === "Areena" ? "Video" : undefined;
+            updateParams({
+              site: newValue,
+              articleType: forcedContentType ?? params.articleType,
+            });
+          }}
+          value={params.site}
         />
       </Selector>
       <Selector>
-        <SelectorLabel>Article type</SelectorLabel>
-        <Select
+        <SelectorLabel>Content type</SelectorLabel>
+        <OptionsSelector
           options={allContentTypes.map(getOption<ContentType>)}
           onChange={(newValue) =>
-            newValue !== null && updateParams({ articleType: newValue.value })
+            newValue !== null && updateParams({ articleType: newValue })
           }
-          value={getOption(params.articleType)}
+          value={params.articleType}
+          disabled={forcedContentSites.includes(params.site)}
         />
       </Selector>
       <Selector>
@@ -59,53 +68,56 @@ const Controls = () => {
           onChange={(value) => updateParams({ users: value })}
         />
       </Selector>
-      <Selector>
-        <SelectorLabel>Video length (minutes)</SelectorLabel>
-        <NumberInput
-          min={0}
-          step={0.5}
-          value={params.videoLengthInMinutes}
-          onChange={(value) => updateParams({ videoLengthInMinutes: value })}
-        />
-      </Selector>
-      <Selector horizontal>
-        <CheckboxInput
-          checked={params.optimizeVideo}
-          handleClick={() =>
-            updateParams({ optimizeVideo: !params.optimizeVideo })
-          }
-        />
-        <SelectorLabel horizontal>Optimize video</SelectorLabel>
-      </Selector>
-      <Selector horizontal>
-        <CheckboxInput
-          checked={params.autoplay}
-          handleClick={() => updateParams({ autoplay: !params.autoplay })}
-        />
-        <SelectorLabel horizontal>Video autoplay</SelectorLabel>
-      </Selector>
-      <Selector>
-        <SelectorLabel>
-          Percentage of users who open video (if not on autoplay)
-        </SelectorLabel>
-        <NumberInput
-          min={0}
-          max={100}
-          step={1}
-          value={params.percentageOfUsersPlayingVideo}
-          onChange={(value) =>
-            updateParams({ percentageOfUsersPlayingVideo: value })
-          }
-        />
-      </Selector>
+      {params.articleType === "Video" && (
+        <>
+          <Selector>
+            <SelectorLabel>Video length (minutes)</SelectorLabel>
+            <NumberInput
+              min={0}
+              step={0.5}
+              value={params.videoLengthInMinutes}
+              onChange={(value) =>
+                updateParams({ videoLengthInMinutes: value })
+              }
+            />
+          </Selector>
+          <Selector horizontal>
+            <CheckboxInput
+              checked={params.optimizeVideo}
+              handleClick={() =>
+                updateParams({ optimizeVideo: !params.optimizeVideo })
+              }
+            />
+            <SelectorLabel horizontal>Optimize video</SelectorLabel>
+          </Selector>
+          <Selector horizontal>
+            <CheckboxInput
+              checked={params.autoplay}
+              handleClick={() => updateParams({ autoplay: !params.autoplay })}
+            />
+            <SelectorLabel horizontal>Video autoplay</SelectorLabel>
+          </Selector>
+          <Selector>
+            <SelectorLabel>
+              Percentage of users who open video (if not on autoplay)
+            </SelectorLabel>
+            <SliderInput
+              value={params.percentageOfUsersPlayingVideo}
+              onChange={(value) =>
+                updateParams({ percentageOfUsersPlayingVideo: value })
+              }
+              showNumberInput
+            />
+          </Selector>
+        </>
+      )}
+
       <Selector>
         <SelectorLabel>Percentage of mobile users</SelectorLabel>
-        <NumberInput
-          min={0}
-          max={100}
-          step={1}
+        <SliderInput
           value={params.percentageOfMobileUsers}
           onChange={(value) => updateParams({ percentageOfMobileUsers: value })}
+          showNumberInput
         />
       </Selector>
     </ControlsContainer>

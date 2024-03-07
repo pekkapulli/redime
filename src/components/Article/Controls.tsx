@@ -88,7 +88,9 @@ const Controls = () => {
                 updateParams({ optimizeVideo: !params.optimizeVideo })
               }
             />
-            <SelectorLabel horizontal>Optimize video (on phones)</SelectorLabel>
+            <SelectorLabel horizontal>
+              Optimize video (360p on mobile)
+            </SelectorLabel>
           </Selector>
           <Selector horizontal>
             <CheckboxInput

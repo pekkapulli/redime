@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
-import { P, SectionTitle } from "../common-components";
+import { SectionTitle } from "../common-components";
 import { useDeepMemo } from "../../util/useDeepMemo";
 import { simulateArticleFootprint } from "../../util/simulations";
+import Meter from "../generic/Meter";
+import { theme } from "../../theme";
+import { getCarbonKg } from "../../util/calculationUtils";
 
 const ResultsContainer = styled.div``;
 
@@ -13,39 +16,89 @@ const Results = () => {
     return [simulateArticleFootprint(params)];
   }, [params]);
 
+  const [maxCarbonKg] = useDeepMemo(() => {
+    const max = simulateArticleFootprint({
+      ...params,
+      autoplay: true,
+      contentType: "Video",
+      optimizeVideo: false,
+      percentageOfMobileUsers: 0,
+      percentageOfUsersPlayingStreamContent: 100,
+    });
+    const maxCarbonKg =
+      max.reduce(
+        (result, curr) => result + curr.impacts.totalImpact.total.carbonGrams,
+        0
+      ) / 1000;
+    return [maxCarbonKg];
+  }, [params]);
+
   return (
     <ResultsContainer>
       <SectionTitle>Results</SectionTitle>
-      <P>
-        CO₂e total:{" "}
-        {(
-          impact.reduce(
-            (result, curr) => result + curr.totalImpact.total.carbonGrams,
-            0
-          ) / 1000
-        ).toLocaleString("fi-FI", { maximumFractionDigits: 4 })}{" "}
-        kg
-      </P>
-      <P>
-        CO₂e from page loads:{" "}
-        {(
-          impact.reduce(
-            (result, curr) => result + curr.pageLoadImpact.total.carbonGrams,
-            0
-          ) / 1000
-        ).toLocaleString("fi-FI", { maximumFractionDigits: 4 })}{" "}
-        kg
-      </P>
-      <P>
-        CO₂e from page use (after initial load):{" "}
-        {(
-          impact.reduce(
-            (result, curr) => result + curr.pageUseImpact.total.carbonGrams,
-            0
-          ) / 1000
-        ).toLocaleString("fi-FI", { maximumFractionDigits: 4 })}{" "}
-        kg
-      </P>
+      <Meter
+        title="CO₂ equivalent emissions"
+        maxValue={maxCarbonKg}
+        values={[
+          {
+            label: "Page load emissions",
+            color: theme.colors.darkGreen,
+            value: getCarbonKg(impact, "pageLoadImpact"),
+          },
+          {
+            label: "Page use emissions",
+            color: theme.colors.green,
+            value: getCarbonKg(impact, "pageUseImpact"),
+          },
+        ]}
+        unit="kg CO₂e"
+      />
+      <Meter
+        title="Emissions, mobile users"
+        maxValue={maxCarbonKg}
+        values={[
+          {
+            label: "Page load emissions",
+            color: theme.colors.darkGreen,
+            value: getCarbonKg(
+              impact.filter((i) => i.params.loadParams.deviceType === "Phone"),
+              "pageLoadImpact"
+            ),
+          },
+          {
+            label: "Page use emissions",
+            color: theme.colors.green,
+            value: getCarbonKg(
+              impact.filter((i) => i.params.loadParams.deviceType === "Phone"),
+              "pageUseImpact"
+            ),
+          },
+        ]}
+        unit="kg CO₂e"
+      />
+      <Meter
+        title="Emissions, computer users"
+        maxValue={maxCarbonKg}
+        values={[
+          {
+            label: "Page load emissions",
+            color: theme.colors.darkGreen,
+            value: getCarbonKg(
+              impact.filter((i) => i.params.loadParams.deviceType !== "Phone"),
+              "pageLoadImpact"
+            ),
+          },
+          {
+            label: "Page use emissions",
+            color: theme.colors.green,
+            value: getCarbonKg(
+              impact.filter((i) => i.params.loadParams.deviceType !== "Phone"),
+              "pageUseImpact"
+            ),
+          },
+        ]}
+        unit="kg CO₂e"
+      />
     </ResultsContainer>
   );
 };

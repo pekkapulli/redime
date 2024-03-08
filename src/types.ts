@@ -18,8 +18,8 @@ export interface Params {
 
 export interface ArticleSimulationParams {
   site: Site;
-  articleType: ContentType;
-  videoLengthInMinutes: number;
+  contentType: ContentType;
+  streamContentLengthInMinutes: number;
   optimizeVideo: boolean;
   autoplay: boolean;
   textAlt: boolean;

@@ -14,19 +14,19 @@ const DEVICE_POWER: Record<DeviceType, number> = {
   PC: 115,
   Laptop: 32,
 };
-const DATA_VOLUME_TEXT = 8000000; // in bytes TODO: what unit is this?
-const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000; // in bits per second (fairly standard 720p rate)
-const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785; // in bits per second, measured from a Sanoma video
-const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450; // in bits per second, measured from an Yle video
-const DATA_VOLUME_AUDIO_PER_S = 128000;
-const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000; // https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate
+const DATA_VOLUME_TEXT = 8000000; // in bytes
+const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000 / 8; // in bytes per second (fairly standard 720p rate)
+const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785 / 8; // in bytes per second, measured from a Sanoma video
+const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450 / 8; // in bytes per second, measured from an Yle video
+const DATA_VOLUME_AUDIO_PER_S = 128000 / 8; // in bytes per second, fairly standard podcast definition
+const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000 / 8; // https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate
 const E_ORIGIN_PER_REQUEST = 306;
 const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
-const E_ACC_NET_3G = 4.55e-5;
+const E_ACC_NET_3G = 4.55e-5; // Joules/byte
 // const E_ACC_NET_5G = WIFI_ENERGY_PER_S * 0.1; //claims that its 90% more efficient than WiFi;
-const E_ACC_NET_4G = 0.117 * 3.6e6 / 1e9; // kWh/GB to Joules/byte for 4G
-const E_ACC_NET_5G = 0.501 * 3.6e6 / 1e9; // kWh/GB to Joules/byte for 5G
+const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
+const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
 
 const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
 const POWER_LIGHTBULB = 11;

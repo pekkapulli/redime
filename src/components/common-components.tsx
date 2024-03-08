@@ -33,6 +33,11 @@ export const SectionTitle = styled.h2`
   ${theme.fontSize(2)};
 `;
 
+export const GraphTitle = styled.h3`
+  ${theme.fontBold};
+  ${theme.fontSize(0)};
+`;
+
 // eslint-disable-next-line react-refresh/only-export-components
 export const P = styled.p`
   ${theme.fontNormal};

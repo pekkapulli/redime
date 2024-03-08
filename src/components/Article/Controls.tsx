@@ -17,6 +17,10 @@ const getOption = <T,>(option: T) => ({
 const ControlsContainer = styled.div`
   border-right: 1px solid ${theme.colors.grey(4)};
   padding: 0 ${theme.spacing(3)} ${theme.spacing(3)} 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: ${theme.spacing(1)};
 
   @media (max-width: ${breakpoints.mobilePlus}px) {
     border-right: none;
@@ -42,10 +46,12 @@ const Controls = () => {
               newValue === "Areena" ? "Video" : undefined;
             updateParams({
               site: newValue,
-              articleType: forcedContentType ?? params.articleType,
+              contentType: forcedContentType ?? params.contentType,
             });
           }}
           value={params.site}
+          params={params}
+          paramName="site"
         />
       </Selector>
       <Selector>
@@ -53,10 +59,12 @@ const Controls = () => {
         <OptionsSelector
           options={allContentTypes.map(getOption<ContentType>)}
           onChange={(newValue) =>
-            newValue !== null && updateParams({ articleType: newValue })
+            newValue !== null && updateParams({ contentType: newValue })
           }
-          value={params.articleType}
+          value={params.contentType}
           disabled={forcedContentSites.includes(params.site)}
+          params={params}
+          paramName="contentType"
         />
       </Selector>
       <Selector>
@@ -68,30 +76,32 @@ const Controls = () => {
           onChange={(value) => updateParams({ users: value })}
         />
       </Selector>
-      {params.articleType === "Video" && (
+      {params.contentType !== "Text" && (
         <>
           <Selector>
-            <SelectorLabel>Video length (minutes)</SelectorLabel>
+            <SelectorLabel>{params.contentType} length (minutes)</SelectorLabel>
             <NumberInput
-              min={0}
+              min={0.5}
               step={0.5}
-              value={params.videoLengthInMinutes}
+              value={params.streamContentLengthInMinutes}
               onChange={(value) =>
-                updateParams({ videoLengthInMinutes: value })
+                updateParams({ streamContentLengthInMinutes: value })
               }
             />
           </Selector>
-          <Selector horizontal>
-            <CheckboxInput
-              checked={params.optimizeVideo}
-              handleClick={() =>
-                updateParams({ optimizeVideo: !params.optimizeVideo })
-              }
-            />
-            <SelectorLabel horizontal>
-              Optimize video (360p on mobile)
-            </SelectorLabel>
-          </Selector>
+          {params.contentType === "Video" && (
+            <Selector horizontal>
+              <CheckboxInput
+                checked={params.optimizeVideo}
+                handleClick={() =>
+                  updateParams({ optimizeVideo: !params.optimizeVideo })
+                }
+              />
+              <SelectorLabel horizontal>
+                Optimize video (360p on mobile)
+              </SelectorLabel>
+            </Selector>
+          )}
           <Selector horizontal>
             <CheckboxInput
               checked={params.autoplay}

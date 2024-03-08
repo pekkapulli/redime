@@ -1,4 +1,5 @@
 import { Calculation, EnergyAndCarbon } from "../types";
+import { SimulationResult } from "./simulations";
 
 const zeroCarbonAndEnergy: EnergyAndCarbon = {
   carbonGrams: 0,
@@ -106,3 +107,15 @@ export const multiplyCalculation = (
   ),
   total: multiplyEnergyAndCarbon(calculation.total, users),
 });
+
+export const getCarbonKg = (
+  simulationResults: SimulationResult[],
+  type: keyof SimulationResult["impacts"]
+) => {
+  return (
+    simulationResults.reduce(
+      (result, curr) => result + curr.impacts[type].total.carbonGrams,
+      0
+    ) / 1000
+  );
+};

@@ -1,4 +1,4 @@
-import { ArticleSimulationParams } from "../types";
+import { ArticleSimulationParams, Calculation } from "../types";
 import {
   PageLoadParams,
   PageUseParams,
@@ -39,19 +39,30 @@ const getAmount = (users: number, chances: number[]) =>
     chances.reduce<number>((result, chance) => result * chance, users)
   );
 
-export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
+export type SimulationResult = {
+  params: SimulationParameters;
+  impacts: {
+    pageLoadImpact: Calculation;
+    pageUseImpact: Calculation;
+    totalImpact: Calculation;
+  };
+};
+
+export const simulateArticleFootprint = (
+  params: ArticleSimulationParams
+): SimulationResult[] => {
   const {
     site,
-    articleType,
+    contentType,
     autoplay,
     optimizeVideo,
     percentageOfMobileUsers,
     percentageOfUsersPlayingStreamContent,
     users,
-    videoLengthInMinutes,
+    streamContentLengthInMinutes,
   } = params;
 
-  const hasStreamContent = articleType !== "Text";
+  const hasStreamContent = contentType !== "Text";
   const streamContentPlayChance = getStreamContentPlayChance(
     hasStreamContent,
     autoplay,
@@ -62,11 +73,11 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
 
   // Create a calculation for all different states
 
-  allStates.playsVideo.forEach((playVideoSimulationState) => {
+  allStates.playsVideo.forEach((playStreamContentSimulationState) => {
     allStates.mobile.forEach((mobileSimulationState) => {
       const connectivityMethod = mobileSimulationState ? "3G" : "WIFI"; // TODO: Not accurate
 
-      const videoPlaySimulationMatch = playVideoSimulationState
+      const streamContentPlaySimulationMatch = playStreamContentSimulationState
         ? streamContentPlayChance
         : 1 - streamContentPlayChance;
       const userGroupMatch = mobileSimulationState
@@ -76,7 +87,7 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
       const deviceType = mobileSimulationState ? "Phone" : "Laptop";
 
       const amount = getAmount(users, [
-        videoPlaySimulationMatch,
+        streamContentPlaySimulationMatch,
         userGroupMatch,
       ]);
 
@@ -92,11 +103,11 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
         useParams: {
           connectivityMethod,
           deviceType,
-          contentType: playVideoSimulationState ? "Video" : "Text",
+          contentType: playStreamContentSimulationState ? contentType : "Text",
           // assume it takes a minute to read the article
           durationInSeconds:
-            hasStreamContent && playVideoSimulationState
-              ? videoLengthInMinutes * 60
+            hasStreamContent && playStreamContentSimulationState
+              ? streamContentLengthInMinutes * 60
               : 60,
           optimizeVideo: optimizeVideo && deviceType === "Phone",
           userAmount: amount,
@@ -112,9 +123,7 @@ export const simulateArticleFootprint = (params: ArticleSimulationParams) => {
     const totalImpact = combineCalculations([pageLoadImpact, pageUseImpact]);
     return {
       params: calcParams,
-      pageLoadImpact,
-      pageUseImpact,
-      totalImpact,
+      impacts: { pageLoadImpact, pageUseImpact, totalImpact },
     };
   });
 };

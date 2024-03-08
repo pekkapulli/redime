@@ -9,14 +9,14 @@ interface ArticleParamsContextShape {
 // eslint-disable-next-line react-refresh/only-export-components
 export const initialArticleSimulationParams: ArticleSimulationParams = {
   percentageOfMobileUsers: 80,
-  articleType: "Video",
+  contentType: "Video",
   users: 10000,
   percentageOfUsersPlayingStreamContent: 60,
   autoplay: true,
   optimizeVideo: false,
   site: "HS",
   textAlt: false,
-  videoLengthInMinutes: 2,
+  streamContentLengthInMinutes: 2,
 };
 
 export const ArticleParamsContext = createContext<ArticleParamsContextShape>({

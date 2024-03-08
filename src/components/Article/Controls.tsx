@@ -1,5 +1,5 @@
 import { ContentType, Site, allContentTypes, allSites } from "../../types";
-import { SectionTitle, Selector, SelectorLabel } from "../common-components";
+import { P, SectionTitle, Selector, SelectorLabel } from "../common-components";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
@@ -36,6 +36,7 @@ const Controls = () => {
   return (
     <ControlsContainer>
       <SectionTitle>Options</SectionTitle>
+      <P>Green bars indicate carbon emissions related to the choice.</P>
       <Selector>
         <SelectorLabel>Site</SelectorLabel>
         <OptionsSelector

@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
 import { breakpoints, theme } from "../../theme";
 import { NumberInput } from "../generic/NumberInput";
-import { CheckboxInput } from "../generic/CheckboxInput";
 import OptionsSelector from "../generic/OptionsSelector";
 import SliderInput from "../generic/SliderInput";
 
@@ -90,24 +89,46 @@ const Controls = () => {
             />
           </Selector>
           {params.contentType === "Video" && (
-            <Selector horizontal>
-              <CheckboxInput
-                checked={params.optimizeVideo}
-                handleClick={() =>
-                  updateParams({ optimizeVideo: !params.optimizeVideo })
+            <Selector>
+              <SelectorLabel>Optimize video (360p on mobile)</SelectorLabel>
+              <OptionsSelector
+                options={[
+                  {
+                    label: "On",
+                    value: true,
+                  },
+                  {
+                    label: "Off",
+                    value: false,
+                  },
+                ]}
+                onChange={(newValue) =>
+                  updateParams({ optimizeVideo: newValue })
                 }
+                paramName="optimizeVideo"
+                params={params}
+                value={params.optimizeVideo}
               />
-              <SelectorLabel horizontal>
-                Optimize video (360p on mobile)
-              </SelectorLabel>
             </Selector>
           )}
-          <Selector horizontal>
-            <CheckboxInput
-              checked={params.autoplay}
-              handleClick={() => updateParams({ autoplay: !params.autoplay })}
-            />
+          <Selector>
             <SelectorLabel horizontal>Autoplay</SelectorLabel>
+            <OptionsSelector
+              options={[
+                {
+                  label: "On",
+                  value: true,
+                },
+                {
+                  label: "Off",
+                  value: false,
+                },
+              ]}
+              onChange={(newValue) => updateParams({ autoplay: newValue })}
+              paramName="autoplay"
+              params={params}
+              value={params.autoplay}
+            />
           </Selector>
           {!params.autoplay && (
             <Selector>

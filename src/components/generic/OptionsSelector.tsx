@@ -60,7 +60,9 @@ const Bar = styled.div`
   background-color: ${theme.colors.green};
 `;
 
-const OptionsSelector = <T extends string>(props: OptionsSelectorProps<T>) => {
+const OptionsSelector = <T extends string | boolean>(
+  props: OptionsSelectorProps<T>
+) => {
   const { value, options, onChange, disabled, params, paramName } = props;
 
   const [optionsWithImpact, maxCarbon] = useDeepMemo(() => {
@@ -85,7 +87,7 @@ const OptionsSelector = <T extends string>(props: OptionsSelectorProps<T>) => {
     <SelectorContainer>
       {optionsWithImpact.map((o) => (
         <SelectItem
-          key={o.value}
+          key={o.value.toString()}
           selected={o.value === value}
           onClick={() => !disabled && onChange(o.value)}
           disabled={disabled}

@@ -1,4 +1,4 @@
-import { Calculation, EnergyAndCarbon } from "../types";
+import { Calculation, ComparisonValues, EnergyAndCarbon } from "../types";
 import { SimulationResult } from "./simulations";
 
 const zeroCarbonAndEnergy: EnergyAndCarbon = {
@@ -13,9 +13,9 @@ export const combineCalculations = (
     (result, calc) => {
       return {
         comparisonValues: {
-          drivingMetersPetrolCar:
-            result.comparisonValues.drivingMetersPetrolCar +
-            calc.comparisonValues.drivingMetersPetrolCar,
+          drivingKMPetrolCar:
+            result.comparisonValues.drivingKMPetrolCar +
+            calc.comparisonValues.drivingKMPetrolCar,
           lightBulbsDuration:
             result.comparisonValues.lightBulbsDuration +
             calc.comparisonValues.lightBulbsDuration,
@@ -61,7 +61,7 @@ export const combineCalculations = (
     },
     {
       comparisonValues: {
-        drivingMetersPetrolCar: 0,
+        drivingKMPetrolCar: 0,
         lightBulbsDuration: 0,
       },
       dataTransferEnergyConsumption: zeroCarbonAndEnergy,
@@ -88,8 +88,7 @@ export const multiplyCalculation = (
   users: number
 ): Calculation => ({
   comparisonValues: {
-    drivingMetersPetrolCar:
-      calculation.comparisonValues.drivingMetersPetrolCar * users,
+    drivingKMPetrolCar: calculation.comparisonValues.drivingKMPetrolCar * users,
     lightBulbsDuration: calculation.comparisonValues.lightBulbsDuration * users,
   },
   dataTransferEnergyConsumption: multiplyEnergyAndCarbon(
@@ -117,5 +116,24 @@ export const getCarbonKg = (
       (result, curr) => result + curr.impacts[type].total.carbonGrams,
       0
     ) / 1000
+  );
+};
+
+export const getTotalComparisons = (simulationResults: SimulationResult[]) => {
+  return simulationResults.reduce<ComparisonValues>(
+    (result, simulation) => {
+      return {
+        drivingKMPetrolCar:
+          result.drivingKMPetrolCar +
+          simulation.impacts.totalImpact.comparisonValues.drivingKMPetrolCar,
+        lightBulbsDuration:
+          result.lightBulbsDuration +
+          simulation.impacts.totalImpact.comparisonValues.lightBulbsDuration,
+      };
+    },
+    {
+      drivingKMPetrolCar: 0,
+      lightBulbsDuration: 0,
+    }
   );
 };

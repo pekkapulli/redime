@@ -6,7 +6,8 @@ import { useDeepMemo } from "../../util/useDeepMemo";
 import { simulateArticleFootprint } from "../../util/simulations";
 import Meter from "../generic/Meter";
 import { theme } from "../../theme";
-import { getCarbonKg } from "../../util/calculationUtils";
+import { getCarbonKg, getTotalComparisons } from "../../util/calculationUtils";
+import Comparisons from "./Comparisons";
 
 const ResultsContainer = styled.div``;
 
@@ -16,7 +17,7 @@ const Results = () => {
     return [simulateArticleFootprint(params)];
   }, [params]);
 
-  const [maxCarbonKg] = useDeepMemo(() => {
+  const [maxCarbonKg, maxComparisons] = useDeepMemo(() => {
     const max = simulateArticleFootprint({
       ...params,
       autoplay: true,
@@ -25,12 +26,9 @@ const Results = () => {
       percentageOfMobileUsers: 100,
       percentageOfUsersPlayingStreamContent: 100,
     });
-    const maxCarbonKg =
-      max.reduce(
-        (result, curr) => result + curr.impacts.totalImpact.total.carbonGrams,
-        0
-      ) / 1000;
-    return [maxCarbonKg];
+    const maxCarbonKg = getCarbonKg(max, "totalImpact");
+    const maxComparisons = getTotalComparisons(max);
+    return [maxCarbonKg, maxComparisons];
   }, [params]);
 
   return (
@@ -52,6 +50,10 @@ const Results = () => {
           },
         ]}
         unit="kg CO₂e"
+      />
+      <Comparisons
+        maxComparisons={maxComparisons}
+        comparisons={getTotalComparisons(impact)}
       />
       <Meter
         title="Emissions, mobile users"

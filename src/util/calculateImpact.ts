@@ -1,5 +1,6 @@
 import {
   Calculation,
+  ComparisonValues,
   ConnectivityMethod,
   ContentType,
   DeviceType,
@@ -30,8 +31,8 @@ const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
 const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
 
 const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
-const POWER_LIGHTBULB = 11;
-const CAR_EMISSIONS = 0.20864;
+const POWER_LIGHTBULB = 40;
+const CAR_EMISSIONS = 0.20864; // kg/km
 
 const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
   const totalEnergyConsumptionWh = energyInJoules / 3600;
@@ -144,23 +145,18 @@ const formulateDataTransferEnergyConsumptionSum = (
   );
 };
 
-export interface ComparisonValues {
-  drivingMetersPetrolCar: number;
-  lightBulbsDuration: number;
-}
-
 const calculateComparisonValues = (
   carbonGrams: number,
   eTotalJoule: number,
   durationSecs: number
 ): ComparisonValues => {
   // kg per km
-  const drivingMetersPetrolCar = (carbonGrams / CAR_EMISSIONS) * 1000;
+  const drivingKMPetrolCar = carbonGrams / 1000 / CAR_EMISSIONS;
 
   const lightBulbsDuration = eTotalJoule / (POWER_LIGHTBULB * durationSecs);
 
   return {
-    drivingMetersPetrolCar,
+    drivingKMPetrolCar,
     lightBulbsDuration,
   };
 };

@@ -75,8 +75,6 @@ export const simulateArticleFootprint = (
 
   allStates.playsVideo.forEach((playStreamContentSimulationState) => {
     allStates.mobile.forEach((mobileSimulationState) => {
-      const connectivityMethod = mobileSimulationState ? "3G" : "WIFI"; // TODO: Not accurate
-
       const streamContentPlaySimulationMatch = playStreamContentSimulationState
         ? streamContentPlayChance
         : 1 - streamContentPlayChance;
@@ -94,17 +92,15 @@ export const simulateArticleFootprint = (
       calculations.push({
         amount,
         loadParams: {
-          connectivityMethod,
           deviceType,
-          dataVolume: hasStreamContent ? 8000000 : 10000000, // TODO: not accurate
+          dataVolume: site === "HS" ? 11200000 : 2000000,
           userAmount: amount,
           site,
         },
         useParams: {
-          connectivityMethod,
           deviceType,
           contentType: playStreamContentSimulationState ? contentType : "Text",
-          // assume it takes a minute to read the article
+          // Assume it takes a minute to read the article
           durationInSeconds:
             hasStreamContent && playStreamContentSimulationState
               ? streamContentLengthInMinutes * 60

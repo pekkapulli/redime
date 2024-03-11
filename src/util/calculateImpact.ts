@@ -5,6 +5,7 @@ import {
   DeviceType,
   EnergyAndCarbon,
   Site,
+  allConnectivityMethods,
 } from "../types";
 import { multiplyCalculation } from "./calculationUtils";
 
@@ -103,6 +104,46 @@ const getDataTransferEnergyConsumption = (
   }
 };
 
+const DATA_SHARE_MAP: {
+  mobile: Record<ConnectivityMethod, number>;
+  computer: Record<ConnectivityMethod, number>;
+} = {
+  mobile: {
+    "4G": 0.4,
+    "5G": 0.3,
+    "3G": 0,
+    WIFI: 0.3,
+  },
+  computer: {
+    "4G": 0.3,
+    "5G": 0.1,
+    "3G": 0,
+    WIFI: 0.6,
+  },
+};
+
+const formulateDataTransferEnergyConsumptionSum = (
+  deviceType: DeviceType,
+  dataVolume: number,
+  pageLoads: number,
+  durationInSeconds: number
+) => {
+  const device = deviceType === "Phone" ? "mobile" : "computer";
+
+  return allConnectivityMethods.reduce(
+    (result, method) =>
+      result +
+      getDataTransferEnergyConsumption(
+        method,
+        dataVolume,
+        pageLoads,
+        durationInSeconds
+      ) *
+        DATA_SHARE_MAP[device][method],
+    0
+  );
+};
+
 export interface ComparisonValues {
   drivingMetersPetrolCar: number;
   lightBulbsDuration: number;
@@ -140,7 +181,6 @@ const calculateNetworkEnergyConsumption = (
 
 export interface PageLoadParams {
   deviceType: DeviceType;
-  connectivityMethod: ConnectivityMethod;
   dataVolume: number;
   userAmount: number;
   site: Site;
@@ -149,7 +189,7 @@ export interface PageLoadParams {
 export const calculatePageLoadImpact = (
   params: PageLoadParams
 ): Calculation => {
-  const { deviceType, connectivityMethod, dataVolume, userAmount } = params;
+  const { deviceType, dataVolume, userAmount } = params;
   const deviceEnergyConsumption = getDeviceEnergyConsumption(deviceType);
 
   const durationInSeconds = 5; // an unbased assumption about page load time
@@ -158,12 +198,13 @@ export const calculatePageLoadImpact = (
   const networkEnergyConsumption =
     calculateNetworkEnergyConsumption(dataVolume);
 
-  const dataTransferEnergyConsumption = getDataTransferEnergyConsumption(
-    connectivityMethod,
-    dataVolume,
-    1,
-    durationInSeconds
-  );
+  const dataTransferEnergyConsumption =
+    formulateDataTransferEnergyConsumptionSum(
+      deviceType,
+      dataVolume,
+      1,
+      durationInSeconds
+    );
 
   const energyOfUse = deviceEnergyConsumption * durationInSeconds;
 
@@ -199,7 +240,6 @@ export const calculatePageLoadImpact = (
 export interface PageUseParams {
   deviceType: DeviceType;
   contentType: ContentType;
-  connectivityMethod: ConnectivityMethod;
   durationInSeconds: number;
   optimizeVideo: boolean;
   userAmount: number;
@@ -214,7 +254,6 @@ export type CalculationParams = PageLoadParams | PageUseParams;
 export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
   const {
     deviceType,
-    connectivityMethod,
     contentType,
     durationInSeconds,
     optimizeVideo,
@@ -239,12 +278,13 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
   const networkEnergyConsumption =
     calculateNetworkEnergyConsumption(dataVolume);
 
-  const dataTransferEnergyConsumption = getDataTransferEnergyConsumption(
-    connectivityMethod,
-    dataVolume,
-    1,
-    durationInSeconds
-  );
+  const dataTransferEnergyConsumption =
+    formulateDataTransferEnergyConsumptionSum(
+      deviceType,
+      dataVolume,
+      1,
+      durationInSeconds
+    );
 
   const energyOfUse = deviceEnergyConsumption * durationInSeconds;
 

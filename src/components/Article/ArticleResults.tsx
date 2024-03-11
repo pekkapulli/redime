@@ -22,7 +22,7 @@ const Results = () => {
       autoplay: true,
       contentType: "Video",
       optimizeVideo: false,
-      percentageOfMobileUsers: 0,
+      percentageOfMobileUsers: 100,
       percentageOfUsersPlayingStreamContent: 100,
     });
     const maxCarbonKg =

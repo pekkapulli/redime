@@ -1,5 +1,12 @@
 import { ContentType, Site, allContentTypes, allSites } from "../../types";
-import { P, SectionTitle, Selector, SelectorLabel } from "../common-components";
+import {
+  Details,
+  P,
+  SectionTitle,
+  Selector,
+  SelectorLabel,
+  Summary,
+} from "../common-components";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
@@ -33,10 +40,16 @@ const forcedContentSites: Site[] = ["Areena"];
 const Controls = () => {
   const { params, updateParams } = useContext(ArticleParamsContext);
 
+  const streamedContentDescription =
+    params.contentType === "Video" ? "video" : "audio";
+
   return (
     <ControlsContainer>
       <SectionTitle>Options</SectionTitle>
-      <P>Green bars indicate carbon emissions related to the choice.</P>
+      <P>
+        Green bars above buttons indicate total carbon emissions related to the
+        choice.
+      </P>
       <Selector>
         <SelectorLabel>Site</SelectorLabel>
         <OptionsSelector
@@ -53,6 +66,11 @@ const Controls = () => {
           params={params}
           paramName="site"
         />
+        <Details>
+          <Summary>Site details</Summary>
+          More data is downloaded on HS page load (due to Yle optimizations and
+          HS ads), and HS uses a higher bit rate for video content.
+        </Details>
       </Selector>
       <Selector>
         <SelectorLabel>Content type</SelectorLabel>
@@ -110,10 +128,15 @@ const Controls = () => {
                 params={params}
                 value={params.optimizeVideo}
               />
+              <Details>
+                <Summary>Optimization details</Summary>
+                E.g. YouTube has a data saver mode, and generally optimizes
+                video definition by network speed and device size.
+              </Details>
             </Selector>
           )}
           <Selector>
-            <SelectorLabel horizontal>Autoplay</SelectorLabel>
+            <SelectorLabel>Autoplay</SelectorLabel>
             <OptionsSelector
               options={[
                 {
@@ -134,8 +157,8 @@ const Controls = () => {
           {!params.autoplay && (
             <Selector>
               <SelectorLabel>
-                Percentage of users who play streamed content (if not on
-                autoplay)
+                Percentage of users who play {streamedContentDescription} (when
+                not on autoplay)
               </SelectorLabel>
               <SliderInput
                 value={params.percentageOfUsersPlayingStreamContent}
@@ -144,6 +167,12 @@ const Controls = () => {
                 }
                 showNumberInput
               />
+              <Details>
+                <Summary>Reasoning for user choice</Summary>
+                Some users may prefer text alternatives to{" "}
+                {streamedContentDescription}s or just want to read the text
+                article. You can simulate these choices with this slider.
+              </Details>
             </Selector>
           )}
         </>
@@ -156,6 +185,11 @@ const Controls = () => {
           onChange={(value) => updateParams({ percentageOfMobileUsers: value })}
           showNumberInput
         />
+        <Details>
+          <Summary>Mobile use effects</Summary>
+          Mobile use increases energy needed for data transfer, but decreases
+          device power consumption.
+        </Details>
       </Selector>
     </ControlsContainer>
   );

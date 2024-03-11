@@ -20,11 +20,11 @@ export const Selector = styled.div<{ horizontal?: boolean }>`
 `;
 
 export const SelectorLabel = styled.label<{
-  horizontal?: boolean;
   disabled?: boolean;
 }>`
-  width: ${(p) => (p.horizontal ? "auto" : "100%")};
-  margin-${(p) => (p.horizontal ? "right" : "bottom")}: ${theme.spacing(0)}};
+  ${theme.fontBold};
+  width: "100%";
+  margin-bottom: ${theme.spacing(0)};
   color: ${(p) => (p.disabled ? theme.colors.grey(3) : theme.colors.black)};
 `;
 
@@ -47,4 +47,16 @@ export const P = styled.p`
   line-height: 1.6;
   max-width: 640px;
   width: 100%;
+`;
+
+export const Details = styled.details`
+  ${theme.fontSize(-1)};
+  ${theme.fontNormal};
+  color: ${theme.colors.grey(1)};
+`;
+
+export const Summary = styled.summary`
+  ${theme.fontSize(-1)};
+  color: ${theme.colors.grey(1)};
+  cursor: help;
 `;

@@ -16,9 +16,9 @@ export const combineCalculations = (
           drivingKMPetrolCar:
             result.comparisonValues.drivingKMPetrolCar +
             calc.comparisonValues.drivingKMPetrolCar,
-          lightBulbsDuration:
-            result.comparisonValues.lightBulbsDuration +
-            calc.comparisonValues.lightBulbsDuration,
+          lightBulbDurationSeconds:
+            result.comparisonValues.lightBulbDurationSeconds +
+            calc.comparisonValues.lightBulbDurationSeconds,
         },
         dataTransferEnergyConsumption: {
           carbonGrams:
@@ -62,7 +62,7 @@ export const combineCalculations = (
     {
       comparisonValues: {
         drivingKMPetrolCar: 0,
-        lightBulbsDuration: 0,
+        lightBulbDurationSeconds: 0,
       },
       dataTransferEnergyConsumption: zeroCarbonAndEnergy,
       energyOfUse: zeroCarbonAndEnergy,
@@ -89,7 +89,8 @@ export const multiplyCalculation = (
 ): Calculation => ({
   comparisonValues: {
     drivingKMPetrolCar: calculation.comparisonValues.drivingKMPetrolCar * users,
-    lightBulbsDuration: calculation.comparisonValues.lightBulbsDuration * users,
+    lightBulbDurationSeconds:
+      calculation.comparisonValues.lightBulbDurationSeconds * users,
   },
   dataTransferEnergyConsumption: multiplyEnergyAndCarbon(
     calculation.dataTransferEnergyConsumption,
@@ -126,14 +127,15 @@ export const getTotalComparisons = (simulationResults: SimulationResult[]) => {
         drivingKMPetrolCar:
           result.drivingKMPetrolCar +
           simulation.impacts.totalImpact.comparisonValues.drivingKMPetrolCar,
-        lightBulbsDuration:
-          result.lightBulbsDuration +
-          simulation.impacts.totalImpact.comparisonValues.lightBulbsDuration,
+        lightBulbDurationSeconds:
+          result.lightBulbDurationSeconds +
+          simulation.impacts.totalImpact.comparisonValues
+            .lightBulbDurationSeconds,
       };
     },
     {
       drivingKMPetrolCar: 0,
-      lightBulbsDuration: 0,
+      lightBulbDurationSeconds: 0,
     }
   );
 };

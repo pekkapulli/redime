@@ -46,5 +46,5 @@ export interface Calculation {
 
 export interface ComparisonValues {
   drivingKMPetrolCar: number;
-  lightBulbsDuration: number;
+  lightBulbDurationSeconds: number;
 }

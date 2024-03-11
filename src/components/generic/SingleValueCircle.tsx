@@ -28,8 +28,8 @@ const SingleValueCircle = withParentDimensions(
     props: {
       maxValue: number;
       value: number;
-      unit: string;
-      title: string;
+      unit?: string;
+      title?: string;
     } & ParentDimensionsProps
   ) => {
     const {
@@ -46,13 +46,17 @@ const SingleValueCircle = withParentDimensions(
 
     return (
       <SingleValueCircleContainer>
-        <GraphTitle style={{ textAlign: "center" }}>{title}</GraphTitle>
+        {title ? (
+          <GraphTitle style={{ textAlign: "center" }}>{title}</GraphTitle>
+        ) : undefined}
         <svg width={width} height={width}>
           <Circle cx={width / 2} cy={width / 2} r={scaleSize(value)} />
         </svg>
-        <Value>
-          {value.toLocaleString("fi-FI", { maximumFractionDigits: 1 })} {unit}
-        </Value>
+        {unit && (
+          <Value>
+            {value.toLocaleString("fi-FI", { maximumFractionDigits: 1 })} {unit}
+          </Value>
+        )}
       </SingleValueCircleContainer>
     );
   }

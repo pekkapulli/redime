@@ -31,7 +31,7 @@ const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
 const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
 
 const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
-const POWER_LIGHTBULB = 40;
+const POWER_LIGHTBULB = 40; // Watts = j/s
 const CAR_EMISSIONS = 0.20864; // kg/km
 
 const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
@@ -147,17 +147,14 @@ const formulateDataTransferEnergyConsumptionSum = (
 
 const calculateComparisonValues = (
   carbonGrams: number,
-  eTotalJoule: number,
-  durationSecs: number
+  eTotalJoule: number
 ): ComparisonValues => {
-  // kg per km
   const drivingKMPetrolCar = carbonGrams / 1000 / CAR_EMISSIONS;
-
-  const lightBulbsDuration = eTotalJoule / (POWER_LIGHTBULB * durationSecs);
+  const lightBulbDurationSeconds = eTotalJoule / POWER_LIGHTBULB; // j  / j/s = s
 
   return {
     drivingKMPetrolCar,
-    lightBulbsDuration,
+    lightBulbDurationSeconds,
   };
 };
 
@@ -214,8 +211,7 @@ export const calculatePageLoadImpact = (
 
   const comparisonValues = calculateComparisonValues(
     totalEnergyAndCarbon.carbonGrams,
-    eTotalJoule,
-    durationInSeconds
+    eTotalJoule
   );
 
   return multiplyCalculation(
@@ -294,8 +290,7 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
 
   const comparisonValues = calculateComparisonValues(
     totalEnergyAndCarbon.carbonGrams,
-    eTotalJoule,
-    durationInSeconds
+    eTotalJoule
   );
 
   return multiplyCalculation(

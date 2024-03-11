@@ -5,10 +5,19 @@ const HeaderContainer = styled.header`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: ${theme.spacing(3)} ${theme.spacing(4)};
   background-color: ${theme.colors.green};
+`;
+
+const HeaderContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 1280px;
+  padding: ${theme.spacing(3)} ${theme.spacing(4)};
+  width: 100%;
 `;
 
 const Title = styled.h1`
@@ -20,7 +29,9 @@ const Title = styled.h1`
 export const Header = () => {
   return (
     <HeaderContainer>
-      <Title>ReDime prototypes</Title>
+      <HeaderContent>
+        <Title>ReDime Smarticle</Title>
+      </HeaderContent>
     </HeaderContainer>
   );
 };

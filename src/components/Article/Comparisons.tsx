@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ComparisonValues } from "../../types";
 import SingleValueCircle from "../generic/SingleValueCircle";
 import { theme } from "../../theme";
+import { P } from "../common-components";
 
 interface ComparisonProps {
   maxComparisons: ComparisonValues;
@@ -11,12 +12,17 @@ interface ComparisonProps {
 const ComparisonsContainer = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  max-width: 480px;
+  max-width: 440px;
   width: 100%;
-  gid-column-gap: ${theme.spacing(3)};
+  gap: ${theme.spacing(3)};
 `;
 
-const Comparison = styled.div``;
+const Comparison = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+`;
 
 const Comparisons = (props: ComparisonProps) => {
   const { maxComparisons, comparisons } = props;
@@ -26,17 +32,22 @@ const Comparisons = (props: ComparisonProps) => {
         <SingleValueCircle
           maxValue={maxComparisons.drivingKMPetrolCar}
           value={comparisons.drivingKMPetrolCar}
-          unit="km"
-          title="Driving with a petrol car"
         />
       </Comparison>
       <Comparison>
-        <SingleValueCircle
-          maxValue={maxComparisons.lightBulbsDuration / 3600}
-          value={comparisons.lightBulbsDuration / 3600}
-          unit="hours"
-          title="Hours of 40W lightbulb use"
-        />
+        <P style={{ fontWeight: 700, marginBottom: theme.spacing(2) }}>
+          {(comparisons.lightBulbDurationSeconds / 3600).toLocaleString(
+            "fi-FI",
+            { maximumFractionDigits: 1 }
+          )}{" "}
+          hours of 40W lightbulb use.
+        </P>
+        <P style={{ fontWeight: 700 }}>
+          {comparisons.drivingKMPetrolCar.toLocaleString("fi-FI", {
+            maximumFractionDigits: 1,
+          })}{" "}
+          km of driving a petrol-powered car. use.
+        </P>
       </Comparison>
     </ComparisonsContainer>
   );

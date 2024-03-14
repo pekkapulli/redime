@@ -7,6 +7,8 @@ import { scaleLinear } from "d3-scale";
 import { theme } from "../../theme";
 import { GraphTitle } from "../common-components";
 import { Legend, LegendItem } from "./Legend";
+import { useState } from "react";
+import { brighten } from "../../util/colors";
 
 const MeterContainer = styled.figure`
   width: 100%;
@@ -18,6 +20,7 @@ const MeterContainer = styled.figure`
 
 const Bar = styled.rect`
   stroke: none;
+  transition: fill 0.3s;
 `;
 
 const Label = styled.text`
@@ -57,6 +60,8 @@ const Meter = withParentDimensions(
     parentDimensions,
     maxValueLabel,
   }: MeterProps & ParentDimensionsProps) => {
+    const [hoveredLabel, setHoveredLabel] = useState<string | undefined>();
+
     const barHeight = 30;
 
     const margins = {
@@ -157,16 +162,24 @@ const Meter = withParentDimensions(
               x1={margins.left}
               x2={margins.left}
             />
-            {valueBars.map((bar) => (
-              <Bar
-                key={bar.value.label}
-                x={margins.left + bar.x}
-                y={margins.top}
-                width={bar.width}
-                height={barHeight}
-                fill={bar.value.color}
-              />
-            ))}
+            {valueBars.map((bar) => {
+              return (
+                <Bar
+                  key={bar.value.label}
+                  x={margins.left + bar.x}
+                  y={margins.top}
+                  width={bar.width}
+                  height={barHeight}
+                  fill={
+                    hoveredLabel === bar.value.label
+                      ? brighten(bar.value.color)
+                      : bar.value.color
+                  }
+                  onMouseEnter={() => setHoveredLabel(bar.value.label)}
+                  onMouseLeave={() => setHoveredLabel(undefined)}
+                />
+              );
+            })}
             <Label x={margins.left + 3} y={margins.top - 8}>
               {label}
             </Label>
@@ -174,7 +187,12 @@ const Meter = withParentDimensions(
         )}
         <Legend>
           {values.map((v) => (
-            <LegendItem color={v.color} key={v.label}>
+            <LegendItem
+              color={hoveredLabel === v.label ? brighten(v.color) : v.color}
+              key={v.label}
+              onMouseEnter={() => setHoveredLabel(v.label)}
+              onMouseLeave={() => setHoveredLabel(undefined)}
+            >
               {v.value.toLocaleString("fi-FI", { maximumFractionDigits: 2 })} kg{" "}
               {v.label}
             </LegendItem>

@@ -14,6 +14,8 @@ interface LegendItemProps {
   color: string;
   children: ReactNode;
   textColor?: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const LegendItemElement = styled.div<{ textColor?: string }>`
@@ -33,11 +35,16 @@ const ColorMarker = styled.div<{ color: string }>`
   height: 12px;
   background-color: ${(p) => p.color};
   margin-right: ${theme.spacing(0)};
+  transition: background-color 0.3s;
   // border-radius: 50%;
 `;
 
 export const LegendItem: React.FunctionComponent<LegendItemProps> = (props) => (
-  <LegendItemElement textColor={props.textColor}>
+  <LegendItemElement
+    textColor={props.textColor}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave}
+  >
     <ColorMarker color={props.color} />
     <div>{props.children}</div>
   </LegendItemElement>

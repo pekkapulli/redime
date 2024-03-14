@@ -28,7 +28,7 @@ const SelectorContainer = styled.div`
 
 const SelectItem = styled.div<{
   selected: boolean;
-  hovered: "true" | "false";
+  $hovered: boolean;
   disabled?: boolean;
 }>`
   height: 48px;
@@ -36,16 +36,14 @@ const SelectItem = styled.div<{
   border-bottom: ${(p) =>
     p.selected
       ? `3px solid ${
-          p.hovered === "true"
-            ? brighten(theme.colors.darkGreen)
-            : theme.colors.darkGreen
+          p.$hovered ? brighten(theme.colors.darkGreen) : theme.colors.darkGreen
         }`
-      : p.hovered === "true"
+      : p.$hovered
       ? `3px solid ${brighten(theme.colors.grey(2))}`
       : "none"};
   ${theme.fontBold};
   ${theme.fontSize(-1)};
-  padding: 0 0 ${theme.spacing(0)} 0;
+  padding: 0 0 2px 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -112,7 +110,7 @@ const OptionsSelector = <T extends string | boolean>(
         <SelectItem
           key={o.value.toString()}
           selected={o.value === value}
-          hovered={hoveredValue === o.value ? "true" : "false"}
+          $hovered={hoveredValue === o.value}
           onClick={() => !disabled && onChange(o.value)}
           disabled={disabled}
           onMouseEnter={() => setHoveredValue(o.value)}

@@ -33,7 +33,7 @@ const ColorMarker = styled.div<{ color: string }>`
   height: 12px;
   background-color: ${(p) => p.color};
   margin-right: ${theme.spacing(0)};
-  border-radius: 50%;
+  // border-radius: 50%;
 `;
 
 export const LegendItem: React.FunctionComponent<LegendItemProps> = (props) => (

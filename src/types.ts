@@ -1,3 +1,5 @@
+import { Omit } from "lodash";
+
 export const allDeviceTypes = ["Phone", "Tablet", "Laptop", "PC"] as const;
 export type DeviceType = (typeof allDeviceTypes)[number];
 
@@ -43,6 +45,8 @@ export interface Calculation {
   dataTransferEnergyConsumption: EnergyAndCarbon;
   energyOfUse: EnergyAndCarbon;
 }
+
+export type CalculationParts = Omit<Calculation, "comparisonValues">;
 
 export interface ComparisonValues {
   drivingKMPetrolCar: number;

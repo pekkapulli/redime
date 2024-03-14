@@ -46,7 +46,7 @@ const Comparisons = (props: ComparisonProps) => {
           {comparisons.drivingKMPetrolCar.toLocaleString("fi-FI", {
             maximumFractionDigits: 1,
           })}{" "}
-          km of driving a petrol-powered car. use.
+          km of driving a petrol-powered car.
         </P>
       </Comparison>
     </ComparisonsContainer>

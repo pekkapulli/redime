@@ -22,7 +22,6 @@ interface OptionsSelectorProps<T> {
 const SelectorContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: ${theme.spacing(1)};
 `;
 
 const SelectItem = styled.div<{ selected: boolean; disabled?: boolean }>`
@@ -32,7 +31,7 @@ const SelectItem = styled.div<{ selected: boolean; disabled?: boolean }>`
     p.selected ? `3px solid ${theme.colors.darkGreen}` : "none"};
   ${theme.fontBold};
   ${theme.fontSize(-1)};
-  padding: 0 0 ${theme.spacing(0)};
+  padding: 0 0 ${theme.spacing(0)} 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -53,10 +52,12 @@ const BarContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid ${theme.colors.grey(2)};
 `;
 
 const Bar = styled.div`
-  width: 100%;
+  width: 80%;
   background-color: ${theme.colors.green};
 `;
 

@@ -22,7 +22,7 @@ const HeaderContent = styled.div`
 
 const Title = styled.h1`
   color: white;
-  ${theme.fontSize(3)};
+  ${theme.fontSize(2)};
   ${theme.fontBold};
 `;
 
@@ -30,7 +30,7 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Title>ReDime Smarticle</Title>
+        <Title>ReDime Article emission calculator</Title>
       </HeaderContent>
     </HeaderContainer>
   );

@@ -34,6 +34,7 @@ export const colors = {
   green: "#779D35",
   darkGreen: "#2E410C",
   grey,
+  categories: ["#2E410C", grey(2), "#779D35", grey(1)],
 };
 
 export const theme = {

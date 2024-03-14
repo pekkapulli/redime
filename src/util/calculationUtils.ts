@@ -1,4 +1,10 @@
-import { Calculation, ComparisonValues, EnergyAndCarbon } from "../types";
+import { omit } from "lodash";
+import {
+  Calculation,
+  CalculationParts,
+  ComparisonValues,
+  EnergyAndCarbon,
+} from "../types";
 import { SimulationResult } from "./simulations";
 
 const zeroCarbonAndEnergy: EnergyAndCarbon = {
@@ -6,71 +12,72 @@ const zeroCarbonAndEnergy: EnergyAndCarbon = {
   totalEnergyConsumptionWh: 0,
 };
 
+const zeroComparisonValues: ComparisonValues = {
+  drivingKMPetrolCar: 0,
+  lightBulbDurationSeconds: 0,
+};
+
+const zeroCalculation: Calculation = {
+  comparisonValues: zeroComparisonValues,
+  dataTransferEnergyConsumption: zeroCarbonAndEnergy,
+  energyOfUse: zeroCarbonAndEnergy,
+  networkEnergyConsumption: zeroCarbonAndEnergy,
+  serverEnergyConsumption: zeroCarbonAndEnergy,
+  total: zeroCarbonAndEnergy,
+};
+
 export const combineCalculations = (
   calculations: Calculation[]
 ): Calculation => {
-  return calculations.reduce<Calculation>(
-    (result, calc) => {
-      return {
-        comparisonValues: {
-          drivingKMPetrolCar:
-            result.comparisonValues.drivingKMPetrolCar +
-            calc.comparisonValues.drivingKMPetrolCar,
-          lightBulbDurationSeconds:
-            result.comparisonValues.lightBulbDurationSeconds +
-            calc.comparisonValues.lightBulbDurationSeconds,
-        },
-        dataTransferEnergyConsumption: {
-          carbonGrams:
-            result.dataTransferEnergyConsumption.carbonGrams +
-            calc.dataTransferEnergyConsumption.carbonGrams,
-          totalEnergyConsumptionWh:
-            result.dataTransferEnergyConsumption.totalEnergyConsumptionWh +
-            calc.dataTransferEnergyConsumption.totalEnergyConsumptionWh,
-        },
-        energyOfUse: {
-          carbonGrams:
-            result.energyOfUse.carbonGrams + calc.energyOfUse.carbonGrams,
-          totalEnergyConsumptionWh:
-            result.energyOfUse.totalEnergyConsumptionWh +
-            calc.energyOfUse.totalEnergyConsumptionWh,
-        },
-        networkEnergyConsumption: {
-          carbonGrams:
-            result.networkEnergyConsumption.carbonGrams +
-            calc.networkEnergyConsumption.carbonGrams,
-          totalEnergyConsumptionWh:
-            result.networkEnergyConsumption.totalEnergyConsumptionWh +
-            calc.networkEnergyConsumption.totalEnergyConsumptionWh,
-        },
-        serverEnergyConsumption: {
-          carbonGrams:
-            result.serverEnergyConsumption.carbonGrams +
-            calc.serverEnergyConsumption.carbonGrams,
-          totalEnergyConsumptionWh:
-            result.serverEnergyConsumption.totalEnergyConsumptionWh +
-            calc.serverEnergyConsumption.totalEnergyConsumptionWh,
-        },
-        total: {
-          carbonGrams: result.total.carbonGrams + calc.total.carbonGrams,
-          totalEnergyConsumptionWh:
-            result.total.totalEnergyConsumptionWh +
-            calc.total.totalEnergyConsumptionWh,
-        },
-      };
-    },
-    {
+  return calculations.reduce<Calculation>((result, calc) => {
+    return {
       comparisonValues: {
-        drivingKMPetrolCar: 0,
-        lightBulbDurationSeconds: 0,
+        drivingKMPetrolCar:
+          result.comparisonValues.drivingKMPetrolCar +
+          calc.comparisonValues.drivingKMPetrolCar,
+        lightBulbDurationSeconds:
+          result.comparisonValues.lightBulbDurationSeconds +
+          calc.comparisonValues.lightBulbDurationSeconds,
       },
-      dataTransferEnergyConsumption: zeroCarbonAndEnergy,
-      energyOfUse: zeroCarbonAndEnergy,
-      networkEnergyConsumption: zeroCarbonAndEnergy,
-      serverEnergyConsumption: zeroCarbonAndEnergy,
-      total: zeroCarbonAndEnergy,
-    }
-  );
+      dataTransferEnergyConsumption: {
+        carbonGrams:
+          result.dataTransferEnergyConsumption.carbonGrams +
+          calc.dataTransferEnergyConsumption.carbonGrams,
+        totalEnergyConsumptionWh:
+          result.dataTransferEnergyConsumption.totalEnergyConsumptionWh +
+          calc.dataTransferEnergyConsumption.totalEnergyConsumptionWh,
+      },
+      energyOfUse: {
+        carbonGrams:
+          result.energyOfUse.carbonGrams + calc.energyOfUse.carbonGrams,
+        totalEnergyConsumptionWh:
+          result.energyOfUse.totalEnergyConsumptionWh +
+          calc.energyOfUse.totalEnergyConsumptionWh,
+      },
+      networkEnergyConsumption: {
+        carbonGrams:
+          result.networkEnergyConsumption.carbonGrams +
+          calc.networkEnergyConsumption.carbonGrams,
+        totalEnergyConsumptionWh:
+          result.networkEnergyConsumption.totalEnergyConsumptionWh +
+          calc.networkEnergyConsumption.totalEnergyConsumptionWh,
+      },
+      serverEnergyConsumption: {
+        carbonGrams:
+          result.serverEnergyConsumption.carbonGrams +
+          calc.serverEnergyConsumption.carbonGrams,
+        totalEnergyConsumptionWh:
+          result.serverEnergyConsumption.totalEnergyConsumptionWh +
+          calc.serverEnergyConsumption.totalEnergyConsumptionWh,
+      },
+      total: {
+        carbonGrams: result.total.carbonGrams + calc.total.carbonGrams,
+        totalEnergyConsumptionWh:
+          result.total.totalEnergyConsumptionWh +
+          calc.total.totalEnergyConsumptionWh,
+      },
+    };
+  }, zeroCalculation);
 };
 
 const multiplyEnergyAndCarbon = (
@@ -118,6 +125,27 @@ export const getCarbonKg = (
       0
     ) / 1000
   );
+};
+
+export const calculationParts: Array<keyof CalculationParts> = [
+  "serverEnergyConsumption",
+  "networkEnergyConsumption",
+  "dataTransferEnergyConsumption",
+  "energyOfUse",
+  "total",
+];
+
+export const getSimulationParts = (
+  simulationResults: SimulationResult[],
+  type: keyof SimulationResult["impacts"]
+): Record<keyof CalculationParts, EnergyAndCarbon> => {
+  const calculations = simulationResults.map(
+    (simulation) => simulation.impacts[type]
+  );
+
+  const total = combineCalculations(calculations);
+
+  return omit(total, "comparisonValues");
 };
 
 export const getTotalComparisons = (simulationResults: SimulationResult[]) => {

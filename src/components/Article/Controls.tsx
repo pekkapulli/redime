@@ -14,6 +14,7 @@ import { breakpoints, theme } from "../../theme";
 import { NumberInput } from "../generic/NumberInput";
 import OptionsSelector from "../generic/OptionsSelector";
 import SliderInput from "../generic/SliderInput";
+import { getStreamedContentDescription } from "../../util/texts";
 
 const getOption = <T,>(option: T) => ({
   label: option,
@@ -40,9 +41,6 @@ const forcedContentSites: Site[] = ["Areena"];
 const Controls = () => {
   const { params, updateParams } = useContext(ArticleParamsContext);
 
-  const streamedContentDescription =
-    params.contentType === "Video" ? "video" : "audio";
-
   return (
     <ControlsContainer>
       <SectionTitle>Options</SectionTitle>
@@ -50,6 +48,19 @@ const Controls = () => {
         Green bars above buttons indicate total carbon emissions related to the
         choice.
       </P>
+      <Selector>
+        <SelectorLabel>Content type</SelectorLabel>
+        <OptionsSelector
+          options={allContentTypes.map(getOption<ContentType>)}
+          onChange={(newValue) =>
+            newValue !== null && updateParams({ contentType: newValue })
+          }
+          value={params.contentType}
+          disabled={forcedContentSites.includes(params.site)}
+          params={params}
+          paramName="contentType"
+        />
+      </Selector>
       <Selector>
         <SelectorLabel>Site</SelectorLabel>
         <OptionsSelector
@@ -71,19 +82,6 @@ const Controls = () => {
           More data is downloaded on HS page load (due to Yle optimizations and
           HS ads), and HS uses a higher bit rate for video content.
         </Details>
-      </Selector>
-      <Selector>
-        <SelectorLabel>Content type</SelectorLabel>
-        <OptionsSelector
-          options={allContentTypes.map(getOption<ContentType>)}
-          onChange={(newValue) =>
-            newValue !== null && updateParams({ contentType: newValue })
-          }
-          value={params.contentType}
-          disabled={forcedContentSites.includes(params.site)}
-          params={params}
-          paramName="contentType"
-        />
       </Selector>
       <Selector>
         <SelectorLabel>Users</SelectorLabel>
@@ -157,8 +155,9 @@ const Controls = () => {
           {!params.autoplay && (
             <Selector>
               <SelectorLabel>
-                Percentage of users who play {streamedContentDescription} (when
-                not on autoplay)
+                Percentage of users who play{" "}
+                {getStreamedContentDescription(params.contentType)} (when not on
+                autoplay)
               </SelectorLabel>
               <SliderInput
                 value={params.percentageOfUsersPlayingStreamContent}
@@ -170,8 +169,9 @@ const Controls = () => {
               <Details>
                 <Summary>Reasoning for user choice</Summary>
                 Some users may prefer text alternatives to{" "}
-                {streamedContentDescription}s or just want to read the text
-                article. You can simulate these choices with this slider.
+                {getStreamedContentDescription(params.contentType)}, or just
+                want to read the text article. You can simulate these choices
+                with this slider.
               </Details>
             </Selector>
           )}

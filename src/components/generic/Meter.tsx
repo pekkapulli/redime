@@ -45,6 +45,7 @@ interface MeterProps {
   values: Value[];
   unit: string;
   title: string;
+  maxValueLabel?: string;
 }
 
 const Meter = withParentDimensions(
@@ -54,12 +55,13 @@ const Meter = withParentDimensions(
     unit,
     title,
     parentDimensions,
+    maxValueLabel,
   }: MeterProps & ParentDimensionsProps) => {
     const barHeight = 30;
 
     const margins = {
       top: 24,
-      bottom: 50,
+      bottom: maxValueLabel !== undefined ? 50 : 20,
       left: 5,
       right: 10,
     };
@@ -103,24 +105,29 @@ const Meter = withParentDimensions(
         <GraphTitle>{title}</GraphTitle>
         {width > 0 && (
           <svg width={width} height={height}>
-            <line
-              stroke={theme.colors.grey(2)}
-              strokeWidth={2}
-              y1={0}
-              y2={height}
-              x1={margins.left + widthScale(maxValue)}
-              x2={margins.left + widthScale(maxValue)}
-            />
-            <text
-              textAnchor="end"
-              x={margins.left + widthScale(maxValue) - 3}
-              y={height - 4}
-              fontSize={theme.fontSizeNumber(0)}
-              fill={theme.colors.grey(2)}
-              fontWeight="bold"
-            >
-              Maximum with user amount and content length
-            </text>
+            {maxValueLabel !== undefined && (
+              <g>
+                <line
+                  stroke={theme.colors.grey(2)}
+                  strokeWidth={2}
+                  y1={0}
+                  y2={height}
+                  x1={margins.left + widthScale(maxValue)}
+                  x2={margins.left + widthScale(maxValue)}
+                />
+
+                <text
+                  textAnchor="end"
+                  x={margins.left + widthScale(maxValue) - 3}
+                  y={height - 4}
+                  fontSize={theme.fontSizeNumber(0)}
+                  fill={theme.colors.grey(2)}
+                  fontWeight="bold"
+                >
+                  {maxValueLabel}
+                </text>
+              </g>
+            )}
             {widthScale.ticks(5).map((t) => {
               const x = margins.left + widthScale(t);
               return (

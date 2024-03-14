@@ -33,6 +33,11 @@ export const SectionTitle = styled.h2`
   ${theme.fontSize(2)};
 `;
 
+export const SubSectionTitle = styled.h3`
+  ${theme.fontBold};
+  ${theme.fontSize(1)};
+`;
+
 export const GraphTitle = styled.h3`
   ${theme.fontBold};
   ${theme.fontSize(0)};
@@ -59,4 +64,11 @@ export const Summary = styled.summary`
   ${theme.fontSize(-1)};
   color: ${theme.colors.grey(1)};
   cursor: help;
+`;
+
+export const Spacer = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${theme.colors.grey(3)};
+  margin: ${theme.spacing(5)} 0;
 `;

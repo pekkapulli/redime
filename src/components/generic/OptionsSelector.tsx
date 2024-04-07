@@ -6,6 +6,7 @@ import { simulateArticleFootprint } from "../../util/simulations";
 import { getCarbonKg } from "../../util/calculationUtils";
 import { useState } from "react";
 import { brighten } from "../../util/colors";
+import { Bar, BarContainer } from "./Bars";
 
 type LabelValue<T> = {
   label: string;
@@ -24,6 +25,7 @@ interface OptionsSelectorProps<T> {
 const SelectorContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin: ${theme.spacing(2)} 0;
 `;
 
 const SelectItem = styled.div<{
@@ -59,21 +61,6 @@ const SelectItem = styled.div<{
     };
   `
       : ""}
-`;
-
-const BarContainer = styled.div`
-  flex-grow: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  border-bottom: 1px solid ${theme.colors.grey(2)};
-`;
-
-const Bar = styled.div`
-  width: 80%;
-  transition: background-color 0.3s;
 `;
 
 const Label = styled.span``;

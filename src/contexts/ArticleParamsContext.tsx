@@ -10,7 +10,7 @@ interface ArticleParamsContextShape {
 export const initialArticleSimulationParams: ArticleSimulationParams = {
   percentageOfMobileUsers: 80,
   contentType: "Video",
-  users: 10000,
+  users: 100000,
   percentageOfUsersPlayingStreamContent: 60,
   autoplay: true,
   optimizeVideo: false,

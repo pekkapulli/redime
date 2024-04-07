@@ -23,6 +23,7 @@ export const SelectorLabel = styled.label<{
   disabled?: boolean;
 }>`
   ${theme.fontBold};
+  ${theme.fontSize(1)};
   width: "100%";
   margin-bottom: ${theme.spacing(0)};
   color: ${(p) => (p.disabled ? theme.colors.grey(3) : theme.colors.black)};

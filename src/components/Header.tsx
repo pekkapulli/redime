@@ -16,13 +16,13 @@ const HeaderContent = styled.div`
   justify-content: flex-start;
   align-items: center;
   max-width: 1280px;
-  padding: ${theme.spacing(3)} ${theme.spacing(4)};
+  padding: ${theme.spacing(2)} ${theme.spacing(4)};
   width: 100%;
 `;
 
 const Title = styled.h1`
   color: white;
-  ${theme.fontSize(2)};
+  ${theme.fontSize(1)};
   ${theme.fontBold};
 `;
 
@@ -30,7 +30,7 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Title>ReDime Article emission calculator</Title>
+        <Title>ReDime calculator</Title>
       </HeaderContent>
     </HeaderContainer>
   );

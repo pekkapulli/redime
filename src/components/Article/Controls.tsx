@@ -1,12 +1,5 @@
-import { ContentType, Site, allContentTypes, allSites } from "../../types";
-import {
-  Details,
-  P,
-  SectionTitle,
-  Selector,
-  SelectorLabel,
-  Summary,
-} from "../common-components";
+import { ContentType, Site, allContentTypes } from "../../types";
+import { P, SectionTitle, Selector, SelectorLabel } from "../common-components";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
@@ -43,11 +36,7 @@ const Controls = () => {
 
   return (
     <ControlsContainer>
-      <SectionTitle>Options</SectionTitle>
-      <P>
-        Green bars above buttons indicate total carbon emissions related to the
-        choice.
-      </P>
+      <SectionTitle>Choices made in article content</SectionTitle>
       <Selector>
         <SelectorLabel>Content type</SelectorLabel>
         <OptionsSelector
@@ -60,8 +49,13 @@ const Controls = () => {
           params={params}
           paramName="contentType"
         />
+        <P>
+          The article's content type has the greatest effect on how much carbon
+          is emitted. Video content produces so much transfer emissions that the
+          amounts emitted from initial page loading are marginal.
+        </P>
       </Selector>
-      <Selector>
+      {/* <Selector>
         <SelectorLabel>Site</SelectorLabel>
         <OptionsSelector
           options={allSites.map(getOption<Site>)}
@@ -82,12 +76,12 @@ const Controls = () => {
           More data is downloaded on HS page load (due to Yle optimizations and
           HS ads), and HS uses a higher bit rate for video content.
         </Details>
-      </Selector>
+      </Selector> */}
       <Selector>
         <SelectorLabel>Users</SelectorLabel>
         <NumberInput
-          min={1}
-          step={1}
+          min={1000}
+          step={1000}
           value={params.users}
           onChange={(value) => updateParams({ users: value })}
         />
@@ -95,7 +89,7 @@ const Controls = () => {
       {params.contentType !== "Text" && (
         <>
           <Selector>
-            <SelectorLabel>{params.contentType} length (minutes)</SelectorLabel>
+            <SelectorLabel>{params.contentType} length</SelectorLabel>
             <NumberInput
               min={0.5}
               step={0.5}
@@ -103,11 +97,12 @@ const Controls = () => {
               onChange={(value) =>
                 updateParams({ streamContentLengthInMinutes: value })
               }
+              unit="min"
             />
           </Selector>
           {params.contentType === "Video" && (
             <Selector>
-              <SelectorLabel>Optimize video (360p on mobile)</SelectorLabel>
+              <SelectorLabel>Optimize video</SelectorLabel>
               <OptionsSelector
                 options={[
                   {
@@ -126,11 +121,11 @@ const Controls = () => {
                 params={params}
                 value={params.optimizeVideo}
               />
-              <Details>
-                <Summary>Optimization details</Summary>
+              <P>
                 E.g. YouTube has a data saver mode, and generally optimizes
-                video definition by network speed and device size.
-              </Details>
+                video definition by network speed and device size. Here, for
+                simplification, we optimize to 360p for mobile devices.
+              </P>
             </Selector>
           )}
           <Selector>
@@ -151,6 +146,11 @@ const Controls = () => {
               params={params}
               value={params.autoplay}
             />
+            <P>
+              Playing the article's video automatically drastically reduces user
+              choice on whether to play video content or not. Some users prefer
+              to read a text version when available.
+            </P>
           </Selector>
           {!params.autoplay && (
             <Selector>
@@ -165,14 +165,19 @@ const Controls = () => {
                   updateParams({ percentageOfUsersPlayingStreamContent: value })
                 }
                 showNumberInput
+                min={0}
+                max={100}
+                step={10}
+                params={params}
+                paramName="percentageOfUsersPlayingStreamContent"
+                unit="%"
               />
-              <Details>
-                <Summary>Reasoning for user choice</Summary>
+              <P>
                 Some users may prefer text alternatives to{" "}
                 {getStreamedContentDescription(params.contentType)}, or just
                 want to read the text article. You can simulate these choices
                 with this slider.
-              </Details>
+              </P>
             </Selector>
           )}
         </>
@@ -184,12 +189,19 @@ const Controls = () => {
           value={params.percentageOfMobileUsers}
           onChange={(value) => updateParams({ percentageOfMobileUsers: value })}
           showNumberInput
+          min={0}
+          max={100}
+          step={10}
+          paramName="percentageOfMobileUsers"
+          params={params}
+          unit="%"
         />
-        <Details>
-          <Summary>Mobile use effects</Summary>
+        <P>
           Mobile use increases energy needed for data transfer, but decreases
-          device power consumption.
-        </Details>
+          device power consumption. Around 40 % of Finnish households use 4G or
+          5G routers for their home internet, so especially in Finland, using a
+          computer doesn't always signify using a fixed internet connection.
+        </P>
       </Selector>
     </ControlsContainer>
   );

@@ -13,7 +13,7 @@ import {
   getTotalComparisons,
 } from "../../util/calculationUtils";
 import Comparisons from "./Comparisons";
-import { getLabel, getStreamedContentDescription } from "../../util/texts";
+import { getLabel } from "../../util/texts";
 
 const ResultsContainer = styled.div``;
 
@@ -45,13 +45,13 @@ const Results = () => {
       <Meter
         title="CO₂ equivalent emissions"
         maxValue={maxCarbonKg}
-        maxValueLabel={`Max with ${params.users.toLocaleString("fi-FI")} users${
-          params.contentType !== "Text"
-            ? ` and ${
-                params.streamContentLengthInMinutes
-              } min of ${getStreamedContentDescription(params.contentType)}.`
-            : ""
-        }`}
+        // maxValueLabel={`Max with ${params.users.toLocaleString("fi-FI")} users${
+        //   params.contentType !== "Text"
+        //     ? ` and ${
+        //         params.streamContentLengthInMinutes
+        //       } min of ${getStreamedContentDescription(params.contentType)}.`
+        //     : ""
+        // }`}
         values={[
           {
             label: "Page load emissions",

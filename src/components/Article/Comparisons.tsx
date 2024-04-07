@@ -35,13 +35,13 @@ const Comparisons = (props: ComparisonProps) => {
         />
       </Comparison>
       <Comparison>
-        <P style={{ fontWeight: 700, marginBottom: theme.spacing(2) }}>
+        {/* <P style={{ fontWeight: 700, marginBottom: theme.spacing(2) }}>
           {(comparisons.lightBulbDurationSeconds / 3600).toLocaleString(
             "fi-FI",
             { maximumFractionDigits: 1 }
           )}{" "}
           hours of 40W lightbulb use.
-        </P>
+        </P> */}
         <P style={{ fontWeight: 700 }}>
           {comparisons.drivingKMPetrolCar.toLocaleString("fi-FI", {
             maximumFractionDigits: 1,

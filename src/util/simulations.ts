@@ -52,7 +52,6 @@ export const simulateArticleFootprint = (
   params: ArticleSimulationParams
 ): SimulationResult[] => {
   const {
-    site,
     contentType,
     autoplay,
     optimizeVideo,
@@ -95,7 +94,6 @@ export const simulateArticleFootprint = (
           deviceType,
           dataVolume: params.initialVolumeInMB * 1000000,
           userAmount: amount,
-          site,
         },
         useParams: {
           deviceType,
@@ -107,7 +105,6 @@ export const simulateArticleFootprint = (
               : 60,
           optimizeVideo: optimizeVideo && deviceType === "Phone",
           userAmount: amount,
-          site,
         },
       });
     });

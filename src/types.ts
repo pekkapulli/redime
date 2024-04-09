@@ -9,9 +9,6 @@ export type ConnectivityMethod = (typeof allConnectivityMethods)[number];
 export const allContentTypes = ["Text", "Video", "Audio"] as const;
 export type ContentType = (typeof allContentTypes)[number];
 
-export const allSites = ["HS", "Yle", "Areena"] as const;
-export type Site = (typeof allSites)[number];
-
 export interface Params {
   deviceType: DeviceType;
   connectivityMethod: ConnectivityMethod;
@@ -19,7 +16,6 @@ export interface Params {
 }
 
 export interface ArticleSimulationParams {
-  site: Site;
   contentType: ContentType;
   streamContentLengthInMinutes: number;
   optimizeVideo: boolean;
@@ -32,6 +28,10 @@ export interface ArticleSimulationParams {
   kwhPerGB_4G: number;
   kwhPerGB_5G: number;
   initialVolumeInMB: number;
+  networkCoeffJPerByte: number;
+  videoMBitsPerSecond: number;
+  optimizedVideoMBitsPerSecond: number;
+  audioKiloBitsPerSecond: number;
 }
 
 // Results

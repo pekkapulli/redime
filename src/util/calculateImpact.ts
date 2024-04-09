@@ -6,7 +6,6 @@ import {
   ContentType,
   DeviceType,
   EnergyAndCarbon,
-  Site,
   allConnectivityMethods,
 } from "../types";
 import { multiplyCalculation } from "./calculationUtils";
@@ -17,14 +16,9 @@ const DEVICE_POWER: Record<DeviceType, number> = {
   PC: 115,
   Laptop: 32,
 };
-// const DATA_VOLUME_TEXT = 8000000; // in bytes
-const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000 / 8; // in bytes per second (fairly standard 720p rate)
-// const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785 / 8; // in bytes per second, measured from a Sanoma video
-// const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450 / 8; // in bytes per second, measured from an Yle video
-const DATA_VOLUME_AUDIO_PER_S = 128000 / 8; // in bytes per second, fairly standard podcast definition
-const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000 / 8; // https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate
+
 const E_ORIGIN_PER_REQUEST = 306;
-const E_NETWORK_COEFF = 0.000045;
+// const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
 const E_ACC_NET_3G = 4.55e-5; // Joules/byte
 // const E_ACC_NET_5G = WIFI_ENERGY_PER_S * 0.1; //claims that its 90% more efficient than WiFi;
@@ -60,17 +54,20 @@ const getDeviceEnergyConsumption = (
 const getPageUseDataVolume = (
   contentType: ContentType,
   durationSecs: number,
-  optimizeVideo: boolean
+  optimizeVideo: boolean,
+  articleSimulationParams: ArticleSimulationParams
 ) => {
   switch (contentType) {
     case "Audio":
-      return durationSecs * DATA_VOLUME_AUDIO_PER_S;
+      return (
+        durationSecs * (articleSimulationParams.audioKiloBitsPerSecond * 125)
+      );
     case "Video":
       return (
         durationSecs *
         (optimizeVideo
-          ? DATA_VOLUME_VIDEO_OPTIMIZED_PER_S
-          : DATA_VOLUME_VIDEO_PER_S_DEFAULT)
+          ? articleSimulationParams.optimizedVideoMBitsPerSecond * 125000
+          : articleSimulationParams.videoMBitsPerSecond * 125000)
       );
     case "Text":
     default:
@@ -169,8 +166,10 @@ const calculateServerEnergyConsumption = (
 
 const calculateNetworkEnergyConsumption = (
   dataVolume: number,
+  articleSimulationParams: ArticleSimulationParams,
   pageLoads?: number
-) => E_NETWORK_COEFF * dataVolume * (pageLoads ?? 1);
+) =>
+  articleSimulationParams.networkCoeffJPerByte * dataVolume * (pageLoads ?? 1);
 
 /**
  * Impact of just a page load – no video content assumed on page load
@@ -180,7 +179,6 @@ export interface PageLoadParams {
   deviceType: DeviceType;
   dataVolume: number;
   userAmount: number;
-  site: Site;
 }
 
 export const calculatePageLoadImpact = (
@@ -193,8 +191,10 @@ export const calculatePageLoadImpact = (
   const durationInSeconds = 5; // an unbased assumption about page load time
 
   const serverEnergyConsumption = calculateServerEnergyConsumption(dataVolume);
-  const networkEnergyConsumption =
-    calculateNetworkEnergyConsumption(dataVolume);
+  const networkEnergyConsumption = calculateNetworkEnergyConsumption(
+    dataVolume,
+    articleSimulationParams
+  );
 
   const dataTransferEnergyConsumption =
     formulateDataTransferEnergyConsumptionSum(
@@ -241,7 +241,6 @@ export interface PageUseParams {
   durationInSeconds: number;
   optimizeVideo: boolean;
   userAmount: number;
-  site: Site;
 }
 
 export type CalculationParams = PageLoadParams | PageUseParams;
@@ -269,14 +268,17 @@ export const calculatePageUseImpact = (
   const dataVolume = getPageUseDataVolume(
     contentType,
     durationInSeconds,
-    optimizeVideo
+    optimizeVideo,
+    articleSimulationParams
   );
   // Use of text content assumes 0 loaded bytes
   const serverEnergyConsumption =
     contentType !== "Text" ? calculateServerEnergyConsumption(dataVolume) : 0;
 
-  const networkEnergyConsumption =
-    calculateNetworkEnergyConsumption(dataVolume);
+  const networkEnergyConsumption = calculateNetworkEnergyConsumption(
+    dataVolume,
+    articleSimulationParams
+  );
 
   const dataTransferEnergyConsumption =
     formulateDataTransferEnergyConsumptionSum(

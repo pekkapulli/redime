@@ -14,13 +14,16 @@ export const initialArticleSimulationParams: ArticleSimulationParams = {
   percentageOfUsersPlayingStreamContent: 60,
   autoplay: true,
   optimizeVideo: false,
-  site: "HS",
   textAlt: false,
   streamContentLengthInMinutes: 2,
 
   kwhPerGB_4G: 0.117,
   kwhPerGB_5G: 0.501,
   initialVolumeInMB: 1,
+  networkCoeffJPerByte: 0.000045,
+  videoMBitsPerSecond: 4,
+  optimizedVideoMBitsPerSecond: 1.1,
+  audioKiloBitsPerSecond: 128,
 };
 
 export const ArticleParamsContext = createContext<ArticleParamsContextShape>({

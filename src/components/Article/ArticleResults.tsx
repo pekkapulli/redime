@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
-import { SectionTitle, Spacer, SubSectionTitle } from "../common-components";
+import { P, SectionTitle, Spacer, SubSectionTitle } from "../common-components";
 import { useDeepMemo } from "../../util/useDeepMemo";
 import { simulateArticleFootprint } from "../../util/simulations";
 import Meter from "../generic/Meter";
@@ -38,6 +38,18 @@ const Results = () => {
 
       return { impact, totalCalculation, maxCarbonKg, maxComparisons };
     }, [params]);
+
+  if (params.users < 10) {
+    return (
+      <ResultsContainer>
+        <SectionTitle>Results</SectionTitle>
+        <P>
+          The simulation does not work accurately for less than 10 users, please
+          add more.
+        </P>
+      </ResultsContainer>
+    );
+  }
 
   return (
     <ResultsContainer>

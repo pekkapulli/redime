@@ -1,4 +1,4 @@
-import { ContentType, Site, allContentTypes } from "../../types";
+import { ContentType, allContentTypes } from "../../types";
 import {
   A,
   P,
@@ -38,8 +38,6 @@ const ControlsContainer = styled.div`
   }
 `;
 
-const forcedContentSites: Site[] = ["Areena"];
-
 const Controls = () => {
   const { params, updateParams } = useContext(ArticleParamsContext);
 
@@ -54,7 +52,6 @@ const Controls = () => {
             newValue !== null && updateParams({ contentType: newValue })
           }
           value={params.contentType}
-          disabled={forcedContentSites.includes(params.site)}
           params={params}
           paramName="contentType"
         />
@@ -64,28 +61,6 @@ const Controls = () => {
           amounts emitted from initial page loading are marginal.
         </P>
       </Selector>
-      {/* <Selector>
-        <SelectorLabel>Site</SelectorLabel>
-        <OptionsSelector
-          options={allSites.map(getOption<Site>)}
-          onChange={(newValue) => {
-            const forcedContentType: ContentType | undefined =
-              newValue === "Areena" ? "Video" : undefined;
-            updateParams({
-              site: newValue,
-              contentType: forcedContentType ?? params.contentType,
-            });
-          }}
-          value={params.site}
-          params={params}
-          paramName="site"
-        />
-        <Details>
-          <Summary>Site details</Summary>
-          More data is downloaded on HS page load (due to Yle optimizations and
-          HS ads), and HS uses a higher bit rate for video content.
-        </Details>
-      </Selector> */}
       <Selector>
         <SelectorLabel>Users</SelectorLabel>
         <NumberInput
@@ -211,12 +186,16 @@ const Controls = () => {
           5G routers for their home internet, so especially in Finland, using a
           computer doesn't always signify using a fixed internet connection.
         </P>
+        <P>
+          For this simulation, we divide the users to approximate percentages
+          that use the different networks.
+        </P>
       </Selector>
 
       <ToggleableContent
         defaultOpen={false}
-        buttonTitle="More choices"
-        closeText="Close"
+        buttonTitle="Edit background assumptions"
+        closeText="Close background assumptions"
       >
         <Selector>
           <SelectorLabel>4G Transfer energy</SelectorLabel>
@@ -269,6 +248,87 @@ const Controls = () => {
               updateParams({ initialVolumeInMB: newValue })
             }
             value={params.initialVolumeInMB}
+          />
+          <SmallP>
+            You can set the initial amount of data loaded by the site here.
+            Above are presets for the measured amounts from yle.fi and hs.fi.
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Video quality</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.videoMBitsPerSecond}
+            onChange={(value) => updateParams({ videoMBitsPerSecond: value })}
+            unit="bps"
+          />
+          <PresetSelector
+            options={[
+              {
+                label: "hs.fi",
+                value: 5.3,
+              },
+              {
+                label: "yle.fi",
+                value: 3.7,
+              },
+            ]}
+            onChange={(newValue) =>
+              updateParams({ initialVolumeInMB: newValue })
+            }
+            value={params.initialVolumeInMB}
+          />
+          <SmallP>
+            You can set the initial amount of data loaded by the site here.
+            Above are presets for the measured video quality of web video in
+            yle.fi and hs.fi.
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Optimized video quality</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.optimizedVideoMBitsPerSecond}
+            onChange={(value) =>
+              updateParams({ optimizedVideoMBitsPerSecond: value })
+            }
+            unit="Mbps"
+          />
+          <SmallP>
+            In the simulation, mobile video is optimized to 360p quality. You
+            can set different values here to try out other optimizations. Find
+            common bit rates in{" "}
+            <A
+              target="_blank"
+              href="https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate"
+            >
+              YouTube's guide.
+            </A>
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Audio quality</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.audioKiloBitsPerSecond}
+            onChange={(value) =>
+              updateParams({ audioKiloBitsPerSecond: value })
+            }
+            unit="Kbps"
+          />
+          <SmallP>
+            Set the quality for audio content. The default, 128 Kbps, is fairly
+            standard podcast quality.
+          </SmallP>
+        </Selector>
+
+        <Selector>
+          <SelectorLabel>Network coefficient</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.networkCoeffJPerByte}
+            onChange={(value) => updateParams({ networkCoeffJPerByte: value })}
+            unit="J/B"
           />
         </Selector>
       </ToggleableContent>

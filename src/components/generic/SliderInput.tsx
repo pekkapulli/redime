@@ -89,6 +89,7 @@ const SliderInput = (props: SliderInputProps) => {
         {stepsWithImpact.map((step) => {
           return (
             <Bar
+              key={step.step}
               style={{
                 height: `${(step.carbon / maxCarbon) * 100}%`,
                 backgroundColor:
@@ -102,7 +103,7 @@ const SliderInput = (props: SliderInputProps) => {
                     ? theme.colors.green
                     : theme.colors.grey(3),
               }}
-              widthPercentage={100 / stepsWithImpact.length}
+              $widthPercentage={100 / stepsWithImpact.length}
               onMouseEnter={() => setHoveredValue(step.step)}
               onMouseLeave={() => setHoveredValue(undefined)}
               onClick={() => onChange(step.step)}

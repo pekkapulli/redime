@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../../theme";
-import { ArticleSimulationParams } from "../../types";
-import { useDeepMemo } from "../../util/useDeepMemo";
-import { simulateArticleFootprint } from "../../util/simulations";
-import { getCarbonKg } from "../../util/calculationUtils";
 import { useState } from "react";
 import { brighten } from "../../util/colors";
-import { Bar, BarContainer } from "./Bars";
 
 type LabelValue<T> = {
   label: string;
@@ -17,9 +12,6 @@ interface OptionsSelectorProps<T> {
   options: LabelValue<T>[];
   onChange: (newOption: T) => void;
   value: T;
-  disabled?: boolean;
-  params: ArticleSimulationParams;
-  paramName: keyof ArticleSimulationParams;
 }
 
 const SelectorContainer = styled.div`
@@ -33,7 +25,6 @@ const SelectItem = styled.div<{
   $hovered: boolean;
   disabled?: boolean;
 }>`
-  height: 48px;
   width: 60px;
   border-bottom: ${(p) =>
     p.selected
@@ -67,61 +58,25 @@ const Label = styled.span`
   color: ${theme.colors.darkGreen};
 `;
 
-const OptionsSelector = <T extends string | boolean>(
+const PresetSelector = <T extends string | boolean | number>(
   props: OptionsSelectorProps<T>
 ) => {
-  const { value, options, onChange, disabled, params, paramName } = props;
+  const { options, onChange, value } = props;
   const [hoveredValue, setHoveredValue] = useState<
-    string | boolean | undefined
+    string | boolean | number | undefined
   >();
-
-  const [optionsWithImpact, maxCarbon] = useDeepMemo(() => {
-    const optionsWithImpact = options.map((o) => {
-      return {
-        ...o,
-        carbon: getCarbonKg(
-          simulateArticleFootprint({
-            ...params,
-            [paramName]: o.value,
-          }),
-          "totalImpact"
-        ),
-      };
-    });
-    const maxCarbon = Math.max(...optionsWithImpact.map((o) => o.carbon));
-
-    return [optionsWithImpact, maxCarbon];
-  }, [params, paramName]);
 
   return (
     <SelectorContainer>
-      {optionsWithImpact.map((o) => (
+      {options.map((o) => (
         <SelectItem
           key={o.value.toString()}
           selected={o.value === value}
           $hovered={hoveredValue === o.value}
-          onClick={() => !disabled && onChange(o.value)}
-          disabled={disabled}
+          onClick={() => onChange(o.value)}
           onMouseEnter={() => setHoveredValue(o.value)}
           onMouseLeave={() => setHoveredValue(undefined)}
         >
-          <BarContainer>
-            <Bar
-              style={{
-                height: `${(o.carbon / maxCarbon) * 100}%`,
-                backgroundColor:
-                  hoveredValue === o.value
-                    ? brighten(
-                        o.value === value
-                          ? theme.colors.green
-                          : theme.colors.grey(3)
-                      )
-                    : o.value === value
-                    ? theme.colors.green
-                    : theme.colors.grey(3),
-              }}
-            />
-          </BarContainer>
           <Label>{o.label}</Label>
         </SelectItem>
       ))}
@@ -129,4 +84,4 @@ const OptionsSelector = <T extends string | boolean>(
   );
 };
 
-export default OptionsSelector;
+export default PresetSelector;

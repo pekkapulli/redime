@@ -11,8 +11,8 @@ export const BarContainer = styled.div`
   border-bottom: 1px solid ${theme.colors.grey(2)};
 `;
 
-export const Bar = styled.div<{ widthPercentage?: number }>`
+export const Bar = styled.div<{ $widthPercentage?: number }>`
   width: ${(p) =>
-    p.widthPercentage !== undefined ? `${p.widthPercentage}%` : "80%"};
+    p.$widthPercentage !== undefined ? `${p.$widthPercentage}%` : "80%"};
   transition: background-color 0.3s;
 `;

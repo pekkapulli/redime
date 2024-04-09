@@ -28,8 +28,6 @@ const PageContainer = styled.section`
 const PageIntro = styled.section`
   width: 100%;
   max-width: 640px;
-  padding: ${theme.spacing(4)};
-  margin: 0 auto;
 `;
 
 const Article = () => {
@@ -48,19 +46,21 @@ const Article = () => {
     <ArticleParamsContext.Provider
       value={{ params, updateParams: setParamsHelper }}
     >
-      <PageIntro>
-        <SectionTitle>Online Article carbon calculator</SectionTitle>
-        <P>
-          Digital media is not emission free. With this calculator, you can see
-          how choices you make in publishing an article or streaming content
-          online affect its carbon frootprint. Green bars above buttons indicate
-          total carbon equivalent emissions from the choice.
-        </P>
-        <P>
-          Carbon emissions are calculated by analyzing the device, network,
-          server, and data transfer .
-        </P>
-      </PageIntro>
+      <PageContainer>
+        <PageIntro>
+          <SectionTitle>Online Article carbon calculator</SectionTitle>
+          <P>
+            Digital media is not emission free. With this calculator, you can
+            see how choices you make in publishing an article or streaming
+            content online affect its carbon frootprint. Green bars above
+            buttons indicate total carbon equivalent emissions from the choice.
+          </P>
+          <P>
+            Carbon emissions are calculated by analyzing the energy consumption
+            related to device use, network, server, and data transfer.
+          </P>
+        </PageIntro>
+      </PageContainer>
       <PageContainer>
         <Controls />
         <ArticleResults />

@@ -93,7 +93,7 @@ export const simulateArticleFootprint = (
         amount,
         loadParams: {
           deviceType,
-          dataVolume: site === "HS" ? 11200000 : 2000000,
+          dataVolume: params.initialVolumeInMB * 1000000,
           userAmount: amount,
           site,
         },
@@ -114,8 +114,11 @@ export const simulateArticleFootprint = (
   });
 
   return calculations.map((calcParams) => {
-    const pageLoadImpact = calculatePageLoadImpact(calcParams.loadParams);
-    const pageUseImpact = calculatePageUseImpact(calcParams.useParams);
+    const pageLoadImpact = calculatePageLoadImpact(
+      calcParams.loadParams,
+      params
+    );
+    const pageUseImpact = calculatePageUseImpact(calcParams.useParams, params);
     const totalImpact = combineCalculations([pageLoadImpact, pageUseImpact]);
     return {
       params: calcParams,

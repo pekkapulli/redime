@@ -17,6 +17,10 @@ export const initialArticleSimulationParams: ArticleSimulationParams = {
   site: "HS",
   textAlt: false,
   streamContentLengthInMinutes: 2,
+
+  kwhPerGB_4G: 0.117,
+  kwhPerGB_5G: 0.501,
+  initialVolumeInMB: 1,
 };
 
 export const ArticleParamsContext = createContext<ArticleParamsContextShape>({

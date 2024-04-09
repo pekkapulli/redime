@@ -1,5 +1,12 @@
 import { ContentType, Site, allContentTypes } from "../../types";
-import { P, SectionTitle, Selector, SelectorLabel } from "../common-components";
+import {
+  A,
+  P,
+  SectionTitle,
+  Selector,
+  SelectorLabel,
+  SmallP,
+} from "../common-components";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
@@ -8,6 +15,8 @@ import { NumberInput } from "../generic/NumberInput";
 import OptionsSelector from "../generic/OptionsSelector";
 import SliderInput from "../generic/SliderInput";
 import { getStreamedContentDescription } from "../../util/texts";
+import { ToggleableContent } from "../generic/ToggleableContent";
+import PresetSelector from "../generic/PresetSelector";
 
 const getOption = <T,>(option: T) => ({
   label: option,
@@ -203,6 +212,66 @@ const Controls = () => {
           computer doesn't always signify using a fixed internet connection.
         </P>
       </Selector>
+
+      <ToggleableContent
+        defaultOpen={false}
+        buttonTitle="More choices"
+        closeText="Close"
+      >
+        <Selector>
+          <SelectorLabel>4G Transfer energy</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.kwhPerGB_4G}
+            onChange={(value) => updateParams({ kwhPerGB_4G: value })}
+            unit="kWh/GB"
+          />
+        </Selector>
+        <Selector>
+          <SelectorLabel>5G Transfer energy</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.kwhPerGB_5G}
+            onChange={(value) => updateParams({ kwhPerGB_5G: value })}
+            unit="kWh/GB"
+          />
+          <SmallP>
+            Source:{" "}
+            <A
+              target="_blank"
+              href="https://www.theseus.fi/handle/10024/817469"
+            >
+              Tietoverkkojen energiankulutus ja päästöt
+            </A>{" "}
+            (Sami Hautala 2023)
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Initial data volume</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.initialVolumeInMB}
+            onChange={(value) => updateParams({ initialVolumeInMB: value })}
+            unit="MB"
+          />
+          <PresetSelector
+            options={[
+              {
+                label: "hs.fi",
+                value: 7,
+              },
+              {
+                label: "yle.fi",
+                value: 1,
+              },
+            ]}
+            onChange={(newValue) =>
+              updateParams({ initialVolumeInMB: newValue })
+            }
+            value={params.initialVolumeInMB}
+          />
+        </Selector>
+      </ToggleableContent>
     </ControlsContainer>
   );
 };

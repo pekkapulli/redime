@@ -1,4 +1,5 @@
 import {
+  ArticleSimulationParams,
   Calculation,
   ComparisonValues,
   ConnectivityMethod,
@@ -16,10 +17,10 @@ const DEVICE_POWER: Record<DeviceType, number> = {
   PC: 115,
   Laptop: 32,
 };
-const DATA_VOLUME_TEXT = 8000000; // in bytes
+// const DATA_VOLUME_TEXT = 8000000; // in bytes
 const DATA_VOLUME_VIDEO_PER_S_DEFAULT = 4000000 / 8; // in bytes per second (fairly standard 720p rate)
-const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785 / 8; // in bytes per second, measured from a Sanoma video
-const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450 / 8; // in bytes per second, measured from an Yle video
+// const DATA_VOLUME_VIDEO_PER_S_SANOMA = 5312785 / 8; // in bytes per second, measured from a Sanoma video
+// const DATA_VOLUME_VIDEO_PER_S_YLE = 3670450 / 8; // in bytes per second, measured from an Yle video
 const DATA_VOLUME_AUDIO_PER_S = 128000 / 8; // in bytes per second, fairly standard podcast definition
 const DATA_VOLUME_VIDEO_OPTIMIZED_PER_S = 1100000 / 8; // https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate
 const E_ORIGIN_PER_REQUEST = 306;
@@ -27,12 +28,14 @@ const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
 const E_ACC_NET_3G = 4.55e-5; // Joules/byte
 // const E_ACC_NET_5G = WIFI_ENERGY_PER_S * 0.1; //claims that its 90% more efficient than WiFi;
-const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
-const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
+// const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
+// const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
 
 const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
 const POWER_LIGHTBULB = 40; // Watts = j/s
 const CAR_EMISSIONS = 0.20864; // kg/km
+
+const getJPerByte = (kwhPerBG: number) => (kwhPerBG * 3.6e6) / 1e9;
 
 const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
   const totalEnergyConsumptionWh = energyInJoules / 3600;
@@ -54,34 +57,24 @@ const getDeviceEnergyConsumption = (
   return DEVICE_POWER[deviceType];
 };
 
-const getDataVolume = (
+const getPageUseDataVolume = (
   contentType: ContentType,
   durationSecs: number,
-  optimizeVideo: boolean,
-  site: Site
+  optimizeVideo: boolean
 ) => {
-  if (contentType === "Audio") {
-    return durationSecs * DATA_VOLUME_AUDIO_PER_S;
-  }
-  if (contentType === "Video") {
-    let bitRate = DATA_VOLUME_VIDEO_PER_S_DEFAULT;
-    switch (site) {
-      case "Areena":
-      case "Yle":
-        bitRate = DATA_VOLUME_VIDEO_PER_S_YLE;
-        break;
-      case "HS":
-        bitRate = DATA_VOLUME_VIDEO_PER_S_SANOMA;
-        break;
-      default:
-        break;
-    }
-    return (
-      durationSecs *
-      (optimizeVideo ? DATA_VOLUME_VIDEO_OPTIMIZED_PER_S : bitRate)
-    );
-  } else {
-    return DATA_VOLUME_TEXT;
+  switch (contentType) {
+    case "Audio":
+      return durationSecs * DATA_VOLUME_AUDIO_PER_S;
+    case "Video":
+      return (
+        durationSecs *
+        (optimizeVideo
+          ? DATA_VOLUME_VIDEO_OPTIMIZED_PER_S
+          : DATA_VOLUME_VIDEO_PER_S_DEFAULT)
+      );
+    case "Text":
+    default:
+      return 0;
   }
 };
 
@@ -89,15 +82,24 @@ const getDataTransferEnergyConsumption = (
   connectivityMethod: ConnectivityMethod,
   dataVolume: number, // Adjusted to be consistent with byte calculations
   pageLoads: number,
-  durationSecs: number
+  durationSecs: number,
+  articleSimulationParams: ArticleSimulationParams
 ) => {
   switch (connectivityMethod) {
     case "3G":
       return E_ACC_NET_3G * dataVolume * pageLoads;
     case "4G":
-      return E_ACC_NET_4G * dataVolume * pageLoads; // Using 4G consumption rate
+      return (
+        getJPerByte(articleSimulationParams.kwhPerGB_4G) *
+        dataVolume *
+        pageLoads
+      ); // Using 4G consumption rate
     case "5G":
-      return E_ACC_NET_5G * dataVolume * pageLoads; // Using 5G consumption rate
+      return (
+        getJPerByte(articleSimulationParams.kwhPerGB_5G) *
+        dataVolume *
+        pageLoads
+      ); // Using 5G consumption rate
     case "WIFI":
       return WIFI_ENERGY_PER_S * durationSecs;
     default:
@@ -127,7 +129,8 @@ const formulateDataTransferEnergyConsumptionSum = (
   deviceType: DeviceType,
   dataVolume: number,
   pageLoads: number,
-  durationInSeconds: number
+  durationInSeconds: number,
+  articleSimulationParams: ArticleSimulationParams
 ) => {
   const device = deviceType === "Phone" ? "mobile" : "computer";
 
@@ -138,7 +141,8 @@ const formulateDataTransferEnergyConsumptionSum = (
         method,
         dataVolume,
         pageLoads,
-        durationInSeconds
+        durationInSeconds,
+        articleSimulationParams
       ) *
         DATA_SHARE_MAP[device][method],
     0
@@ -180,7 +184,8 @@ export interface PageLoadParams {
 }
 
 export const calculatePageLoadImpact = (
-  params: PageLoadParams
+  params: PageLoadParams,
+  articleSimulationParams: ArticleSimulationParams
 ): Calculation => {
   const { deviceType, dataVolume, userAmount } = params;
   const deviceEnergyConsumption = getDeviceEnergyConsumption(deviceType);
@@ -196,7 +201,8 @@ export const calculatePageLoadImpact = (
       deviceType,
       dataVolume,
       1,
-      durationInSeconds
+      durationInSeconds,
+      articleSimulationParams
     );
 
   const energyOfUse = deviceEnergyConsumption * durationInSeconds;
@@ -243,14 +249,16 @@ export type CalculationParams = PageLoadParams | PageUseParams;
 /**
  * Impact of the site after the page has been loaded
  */
-export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
+export const calculatePageUseImpact = (
+  params: PageUseParams,
+  articleSimulationParams: ArticleSimulationParams
+): Calculation => {
   const {
     deviceType,
     contentType,
     durationInSeconds,
     optimizeVideo,
     userAmount,
-    site,
   } = params;
 
   const deviceEnergyConsumption = getDeviceEnergyConsumption(
@@ -258,11 +266,11 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
     contentType
   );
 
-  const dataVolume =
-    contentType !== "Text"
-      ? getDataVolume(contentType, durationInSeconds, optimizeVideo, site)
-      : 0;
-
+  const dataVolume = getPageUseDataVolume(
+    contentType,
+    durationInSeconds,
+    optimizeVideo
+  );
   // Use of text content assumes 0 loaded bytes
   const serverEnergyConsumption =
     contentType !== "Text" ? calculateServerEnergyConsumption(dataVolume) : 0;
@@ -275,7 +283,8 @@ export const calculatePageUseImpact = (params: PageUseParams): Calculation => {
       deviceType,
       dataVolume,
       1,
-      durationInSeconds
+      durationInSeconds,
+      articleSimulationParams
     );
 
   const energyOfUse = deviceEnergyConsumption * durationInSeconds;

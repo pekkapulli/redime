@@ -28,6 +28,10 @@ export interface ArticleSimulationParams {
   percentageOfUsersPlayingStreamContent: number;
   percentageOfMobileUsers: number;
   users: number;
+
+  kwhPerGB_4G: number;
+  kwhPerGB_5G: number;
+  initialVolumeInMB: number;
 }
 
 // Results

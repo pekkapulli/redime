@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../theme";
+import { brighten } from "../util/colors";
 
 export const Selector = styled.div<{ horizontal?: boolean }>`
   margin-top: ${theme.spacing(2)};
@@ -55,6 +56,25 @@ export const P = styled.p`
   width: 100%;
 `;
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const SmallP = styled(P)`
+  ${theme.fontSize(-1)};
+`;
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const A = styled.a`
+  ${theme.fontBold};
+  color: ${theme.colors.green};
+
+  &:hover {
+    color: ${brighten(theme.colors.green)};
+  }
+
+  &:visited {
+    color: ${theme.colors.green};
+  }
+`;
+
 export const Details = styled.details`
   ${theme.fontSize(-1)};
   ${theme.fontNormal};
@@ -73,4 +93,41 @@ export const Spacer = styled.div`
   height: 1px;
   background-color: ${theme.colors.grey(3)};
   margin: ${theme.spacing(5)} 0;
+`;
+
+export const Button = styled.button<{ selected?: boolean }>`
+  background-color: ${theme.colors.green};
+  padding: ${theme.spacing(0)} ${theme.spacing(2)};
+  color: white;
+  ${theme.fontBold};
+  ${theme.fontSize(-1)};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  flex-grow: 0;
+  flex-shrink: 1;
+  text-align: center;
+  justify-content: center;
+  white-space: nowrap;
+  display: inline-block;
+  border-radius: 6px;
+  border: 1px solid ${theme.colors.green};
+  transition: all 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  & + & {
+    margin-left: ${theme.spacing(2)};
+  }
+
+  &:hover {
+    background-color: ${theme.colors.darkGreen};
+    color: white;
+  }
+
+  &:disabled {
+    background-color: ${theme.colors.grey(3)};
+    border: 1px solid ${theme.colors.grey(2)};
+    color: ${theme.colors.grey(2)};
+    cursor: not-allowed;
+  }
 `;

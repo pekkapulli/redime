@@ -1,9 +1,9 @@
 import { Omit } from "lodash";
 
-export const allDeviceTypes = ["Phone", "Tablet", "Laptop", "PC"] as const;
+export const allDeviceTypes = ["Phone", "Laptop"] as const;
 export type DeviceType = (typeof allDeviceTypes)[number];
 
-export const allConnectivityMethods = ["3G", "4G", "5G", "WIFI"] as const;
+export const allConnectivityMethods = ["4G", "5G", "WIFI"] as const;
 export type ConnectivityMethod = (typeof allConnectivityMethods)[number];
 
 export const allContentTypes = ["Text", "Video", "Audio"] as const;
@@ -32,6 +32,10 @@ export interface ArticleSimulationParams {
   videoMBitsPerSecond: number;
   optimizedVideoMBitsPerSecond: number;
   audioKiloBitsPerSecond: number;
+  carbonCoeff: number; // kg co2e / kWh
+  eOriginPerRequest: number; // joules of energy per request
+  devicePowerWPhone: number; // W
+  devicePowerWLaptop: number; // W
 }
 
 // Results

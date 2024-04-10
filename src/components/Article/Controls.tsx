@@ -211,34 +211,6 @@ const Controls = () => {
         closeText="Close background assumptions"
       >
         <Selector>
-          <SelectorLabel>4G Transfer energy</SelectorLabel>
-          <NumberInput
-            min={0}
-            value={params.kwhPerGB_4G}
-            onChange={(value) => updateParams({ kwhPerGB_4G: value })}
-            unit="kWh/GB"
-          />
-        </Selector>
-        <Selector>
-          <SelectorLabel>5G Transfer energy</SelectorLabel>
-          <NumberInput
-            min={0}
-            value={params.kwhPerGB_5G}
-            onChange={(value) => updateParams({ kwhPerGB_5G: value })}
-            unit="kWh/GB"
-          />
-          <SmallP>
-            Source:{" "}
-            <A
-              target="_blank"
-              href="https://www.theseus.fi/handle/10024/817469"
-            >
-              Tietoverkkojen energiankulutus ja päästöt
-            </A>{" "}
-            (Sami Hautala 2023)
-          </SmallP>
-        </Selector>
-        <Selector>
           <SelectorLabel>Initial data volume</SelectorLabel>
           <NumberInput
             min={0}
@@ -338,7 +310,34 @@ const Controls = () => {
             standard podcast quality.
           </SmallP>
         </Selector>
-
+        <Selector>
+          <SelectorLabel>4G Transfer energy</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.kwhPerGB_4G}
+            onChange={(value) => updateParams({ kwhPerGB_4G: value })}
+            unit="kWh/GB"
+          />
+        </Selector>
+        <Selector>
+          <SelectorLabel>5G Transfer energy</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.kwhPerGB_5G}
+            onChange={(value) => updateParams({ kwhPerGB_5G: value })}
+            unit="kWh/GB"
+          />
+          <SmallP>
+            Source:{" "}
+            <A
+              target="_blank"
+              href="https://www.theseus.fi/handle/10024/817469"
+            >
+              Tietoverkkojen energiankulutus ja päästöt
+            </A>{" "}
+            (Sami Hautala 2023)
+          </SmallP>
+        </Selector>
         <Selector>
           <SelectorLabel>Network coefficient</SelectorLabel>
           <NumberInput
@@ -347,6 +346,76 @@ const Controls = () => {
             onChange={(value) => updateParams({ networkCoeffJPerByte: value })}
             unit="J/B"
           />
+          <SmallP>
+            Shared network energy consumption in joules per byte. Source:{" "}
+            <A
+              target="_blank"
+              href="https://ieeexplore.ieee.org/document/6818899"
+            >
+              Analyzing End-to-End Energy Consumption for Digital Services
+            </A>
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Server energy per request</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.eOriginPerRequest}
+            onChange={(value) => updateParams({ eOriginPerRequest: value })}
+            unit="J"
+          />
+          <SmallP>
+            Server energy spent per request. Source:{" "}
+            <A
+              target="_blank"
+              href="https://ieeexplore.ieee.org/document/6818899"
+            >
+              Analyzing End-to-End Energy Consumption for Digital Services
+            </A>
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Laptop energy use</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.devicePowerWLaptop}
+            onChange={(value) => updateParams({ devicePowerWLaptop: value })}
+            unit="W"
+          />
+        </Selector>
+        <Selector>
+          <SelectorLabel>Phone energy use</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.devicePowerWPhone}
+            onChange={(value) => updateParams({ devicePowerWPhone: value })}
+            unit="W"
+          />
+          <SmallP>
+            For simplicity, we assume laptop for non-mobile use. This might be
+            slightly wrong since a desktop PC, or accessories like screens, can
+            use a lot more energy. You can challenge the numbers here.
+          </SmallP>
+        </Selector>
+        <Selector>
+          <SelectorLabel>Carbon coefficient</SelectorLabel>
+          <NumberInput
+            min={0}
+            value={params.carbonCoeff}
+            onChange={(value) => updateParams({ carbonCoeff: value })}
+            unit="kg CO₂e/kwh"
+          />
+          <SmallP>
+            Carbon emission coefficient, kg CO₂e/kwh. Default value's source: 10
+            year average,{" "}
+            <A
+              target="_blank"
+              href="https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm"
+            >
+              Statistics Finland
+            </A>
+            .
+          </SmallP>
         </Selector>
       </ToggleableContent>
     </ControlsContainer>

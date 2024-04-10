@@ -10,30 +10,33 @@ import {
 } from "../types";
 import { multiplyCalculation } from "./calculationUtils";
 
-const DEVICE_POWER: Record<DeviceType, number> = {
-  Phone: 1,
-  Tablet: 3,
-  PC: 115,
-  Laptop: 32,
-};
+// export const DEVICE_POWER: Record<DeviceType, number> = {
+//   Phone: 3,
+//   Tablet: 7,
+//   PC: 115,
+//   Laptop: 32,
+// };
 
-const E_ORIGIN_PER_REQUEST = 306;
+// const E_ORIGIN_PER_REQUEST = 306;
 // const E_NETWORK_COEFF = 0.000045;
 const WIFI_ENERGY_PER_S = 10;
-const E_ACC_NET_3G = 4.55e-5; // Joules/byte
+// const E_ACC_NET_3G = 4.55e-5; // Joules/byte
 // const E_ACC_NET_5G = WIFI_ENERGY_PER_S * 0.1; //claims that its 90% more efficient than WiFi;
 // const E_ACC_NET_4G = (0.117 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 4G
 // const E_ACC_NET_5G = (0.501 * 3.6e6) / 1e9; // kWh/GB to Joules/byte for 5G
 
-const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
+// const CARBON_COEFF = 0.11; // kg / kwh or g / wh, https://pxhopea2.stat.fi/sahkoiset_julkaisut/energia2022/html/suom0011.htm
 const POWER_LIGHTBULB = 40; // Watts = j/s
 const CAR_EMISSIONS = 0.20864; // kg/km
 
 const getJPerByte = (kwhPerBG: number) => (kwhPerBG * 3.6e6) / 1e9;
 
-const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
+const getEnergyAndCarbon = (
+  energyInJoules: number,
+  carbonCoeff: number
+): EnergyAndCarbon => {
   const totalEnergyConsumptionWh = energyInJoules / 3600;
-  const carbonGrams = CARBON_COEFF * totalEnergyConsumptionWh;
+  const carbonGrams = carbonCoeff * totalEnergyConsumptionWh;
 
   return {
     totalEnergyConsumptionWh,
@@ -43,12 +46,16 @@ const getEnergyAndCarbon = (energyInJoules: number): EnergyAndCarbon => {
 
 const getDeviceEnergyConsumption = (
   deviceType: DeviceType,
+  articleSimulationParams: ArticleSimulationParams,
   contentType?: ContentType
 ) => {
-  if (contentType === "Video") {
-    return DEVICE_POWER[deviceType] * 1.15;
-  }
-  return DEVICE_POWER[deviceType];
+  const useCoeff = contentType === "Video" ? 1.15 : 1;
+
+  return (
+    (deviceType === "Laptop"
+      ? articleSimulationParams.devicePowerWLaptop
+      : articleSimulationParams.devicePowerWPhone) * useCoeff
+  );
 };
 
 const getPageUseDataVolume = (
@@ -83,8 +90,8 @@ const getDataTransferEnergyConsumption = (
   articleSimulationParams: ArticleSimulationParams
 ) => {
   switch (connectivityMethod) {
-    case "3G":
-      return E_ACC_NET_3G * dataVolume * pageLoads;
+    // case "3G":
+    //   return E_ACC_NET_3G * dataVolume * pageLoads;
     case "4G":
       return (
         getJPerByte(articleSimulationParams.kwhPerGB_4G) *
@@ -111,13 +118,13 @@ export const DATA_SHARE_MAP: {
   mobile: {
     "4G": 0.4,
     "5G": 0.3,
-    "3G": 0,
+    // "3G": 0,
     WIFI: 0.3,
   },
   computer: {
     "4G": 0.3,
     "5G": 0.1,
-    "3G": 0,
+    // "3G": 0,
     WIFI: 0.6,
   },
 };
@@ -161,8 +168,11 @@ const calculateComparisonValues = (
 
 const calculateServerEnergyConsumption = (
   dataVolume: number,
+  articleSimulationParams: ArticleSimulationParams,
   pageLoads?: number
-) => (E_ORIGIN_PER_REQUEST + 6.9e-6 * dataVolume) * (pageLoads ?? 1);
+) =>
+  (articleSimulationParams.eOriginPerRequest + 6.9e-6 * dataVolume) *
+  (pageLoads ?? 1);
 
 const calculateNetworkEnergyConsumption = (
   dataVolume: number,
@@ -186,11 +196,17 @@ export const calculatePageLoadImpact = (
   articleSimulationParams: ArticleSimulationParams
 ): Calculation => {
   const { deviceType, dataVolume, userAmount } = params;
-  const deviceEnergyConsumption = getDeviceEnergyConsumption(deviceType);
+  const deviceEnergyConsumption = getDeviceEnergyConsumption(
+    deviceType,
+    articleSimulationParams
+  );
 
   const durationInSeconds = 5; // an unbased assumption about page load time
 
-  const serverEnergyConsumption = calculateServerEnergyConsumption(dataVolume);
+  const serverEnergyConsumption = calculateServerEnergyConsumption(
+    dataVolume,
+    articleSimulationParams
+  );
   const networkEnergyConsumption = calculateNetworkEnergyConsumption(
     dataVolume,
     articleSimulationParams
@@ -213,7 +229,10 @@ export const calculatePageLoadImpact = (
     dataTransferEnergyConsumption +
     energyOfUse;
 
-  const totalEnergyAndCarbon = getEnergyAndCarbon(eTotalJoule);
+  const totalEnergyAndCarbon = getEnergyAndCarbon(
+    eTotalJoule,
+    articleSimulationParams.carbonCoeff
+  );
 
   const comparisonValues = calculateComparisonValues(
     totalEnergyAndCarbon.carbonGrams,
@@ -222,14 +241,27 @@ export const calculatePageLoadImpact = (
 
   return multiplyCalculation(
     {
-      total: getEnergyAndCarbon(eTotalJoule),
-      comparisonValues,
-      serverEnergyConsumption: getEnergyAndCarbon(serverEnergyConsumption),
-      networkEnergyConsumption: getEnergyAndCarbon(networkEnergyConsumption),
-      dataTransferEnergyConsumption: getEnergyAndCarbon(
-        dataTransferEnergyConsumption
+      total: getEnergyAndCarbon(
+        eTotalJoule,
+        articleSimulationParams.carbonCoeff
       ),
-      energyOfUse: getEnergyAndCarbon(energyOfUse),
+      comparisonValues,
+      serverEnergyConsumption: getEnergyAndCarbon(
+        serverEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      networkEnergyConsumption: getEnergyAndCarbon(
+        networkEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      dataTransferEnergyConsumption: getEnergyAndCarbon(
+        dataTransferEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      energyOfUse: getEnergyAndCarbon(
+        energyOfUse,
+        articleSimulationParams.carbonCoeff
+      ),
     },
     userAmount
   );
@@ -262,6 +294,7 @@ export const calculatePageUseImpact = (
 
   const deviceEnergyConsumption = getDeviceEnergyConsumption(
     deviceType,
+    articleSimulationParams,
     contentType
   );
 
@@ -273,7 +306,9 @@ export const calculatePageUseImpact = (
   );
   // Use of text content assumes 0 loaded bytes
   const serverEnergyConsumption =
-    contentType !== "Text" ? calculateServerEnergyConsumption(dataVolume) : 0;
+    contentType !== "Text"
+      ? calculateServerEnergyConsumption(dataVolume, articleSimulationParams)
+      : 0;
 
   const networkEnergyConsumption = calculateNetworkEnergyConsumption(
     dataVolume,
@@ -297,7 +332,10 @@ export const calculatePageUseImpact = (
     dataTransferEnergyConsumption +
     energyOfUse;
 
-  const totalEnergyAndCarbon = getEnergyAndCarbon(eTotalJoule);
+  const totalEnergyAndCarbon = getEnergyAndCarbon(
+    eTotalJoule,
+    articleSimulationParams.carbonCoeff
+  );
 
   const comparisonValues = calculateComparisonValues(
     totalEnergyAndCarbon.carbonGrams,
@@ -306,14 +344,27 @@ export const calculatePageUseImpact = (
 
   return multiplyCalculation(
     {
-      total: getEnergyAndCarbon(eTotalJoule),
-      comparisonValues,
-      serverEnergyConsumption: getEnergyAndCarbon(serverEnergyConsumption),
-      networkEnergyConsumption: getEnergyAndCarbon(networkEnergyConsumption),
-      dataTransferEnergyConsumption: getEnergyAndCarbon(
-        dataTransferEnergyConsumption
+      total: getEnergyAndCarbon(
+        eTotalJoule,
+        articleSimulationParams.carbonCoeff
       ),
-      energyOfUse: getEnergyAndCarbon(energyOfUse),
+      comparisonValues,
+      serverEnergyConsumption: getEnergyAndCarbon(
+        serverEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      networkEnergyConsumption: getEnergyAndCarbon(
+        networkEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      dataTransferEnergyConsumption: getEnergyAndCarbon(
+        dataTransferEnergyConsumption,
+        articleSimulationParams.carbonCoeff
+      ),
+      energyOfUse: getEnergyAndCarbon(
+        energyOfUse,
+        articleSimulationParams.carbonCoeff
+      ),
     },
     userAmount
   );

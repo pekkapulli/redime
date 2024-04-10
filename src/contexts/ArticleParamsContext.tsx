@@ -24,6 +24,10 @@ export const initialArticleSimulationParams: ArticleSimulationParams = {
   videoMBitsPerSecond: 4,
   optimizedVideoMBitsPerSecond: 1,
   audioKiloBitsPerSecond: 128,
+  carbonCoeff: 0.11,
+  eOriginPerRequest: 306,
+  devicePowerWPhone: 4,
+  devicePowerWLaptop: 32,
 };
 
 export const ArticleParamsContext = createContext<ArticleParamsContextShape>({

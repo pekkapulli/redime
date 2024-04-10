@@ -79,7 +79,6 @@ export const Details = styled.details`
   ${theme.fontSize(-1)};
   ${theme.fontNormal};
   color: ${theme.colors.grey(1)};
-  margin-top: 4px;
 `;
 
 export const Summary = styled.summary`

@@ -22,7 +22,7 @@ export const initialArticleSimulationParams: ArticleSimulationParams = {
   initialVolumeInMB: 1,
   networkCoeffJPerByte: 0.000045,
   videoMBitsPerSecond: 4,
-  optimizedVideoMBitsPerSecond: 1.1,
+  optimizedVideoMBitsPerSecond: 1,
   audioKiloBitsPerSecond: 128,
 };
 

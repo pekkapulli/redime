@@ -104,7 +104,7 @@ const getDataTransferEnergyConsumption = (
   }
 };
 
-const DATA_SHARE_MAP: {
+export const DATA_SHARE_MAP: {
   mobile: Record<ConnectivityMethod, number>;
   computer: Record<ConnectivityMethod, number>;
 } = {

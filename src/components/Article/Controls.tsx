@@ -1,11 +1,13 @@
 import { ContentType, allContentTypes } from "../../types";
 import {
   A,
+  Details,
   P,
   SectionTitle,
   Selector,
   SelectorLabel,
   SmallP,
+  Summary,
 } from "../common-components";
 import styled from "styled-components";
 import { useContext } from "react";
@@ -17,6 +19,7 @@ import SliderInput from "../generic/SliderInput";
 import { getStreamedContentDescription } from "../../util/texts";
 import { ToggleableContent } from "../generic/ToggleableContent";
 import PresetSelector from "../generic/PresetSelector";
+import { DATA_SHARE_MAP } from "../../util/calculateImpact";
 
 const getOption = <T,>(option: T) => ({
   label: option,
@@ -108,7 +111,8 @@ const Controls = () => {
               <P>
                 E.g. YouTube has a data saver mode, and generally optimizes
                 video definition by network speed and device size. Here, for
-                simplification, we optimize to 360p for mobile devices.
+                simplification, we optimize to 360p for mobile devices. You can
+                edit the bit rates in the background assumptions section below.
               </P>
             </Selector>
           )}
@@ -190,6 +194,15 @@ const Controls = () => {
           For this simulation, we divide the users to approximate percentages
           that use the different networks.
         </P>
+        <Details>
+          <Summary>Simulation shares</Summary>
+          Mobile users: {DATA_SHARE_MAP.mobile["4G"] * 100} % 4G,{" "}
+          {DATA_SHARE_MAP.mobile["5G"] * 100} % 5G,{" "}
+          {DATA_SHARE_MAP.mobile["WIFI"] * 100} % WiFi. Desktop users:{" "}
+          {DATA_SHARE_MAP.computer["4G"] * 100} % 4G,{" "}
+          {DATA_SHARE_MAP.computer["5G"] * 100} % 5G,{" "}
+          {DATA_SHARE_MAP.computer["WIFI"] * 100} % WiFi.
+        </Details>
       </Selector>
 
       <ToggleableContent
@@ -294,16 +307,20 @@ const Controls = () => {
             }
             unit="Mbps"
           />
+          <PresetSelector
+            options={[
+              { label: "360p", value: 1 },
+              { label: "480p", value: 1.5 },
+              { label: "720p", value: 3 },
+            ]}
+            onChange={(value) =>
+              updateParams({ optimizedVideoMBitsPerSecond: value })
+            }
+            value={params.optimizedVideoMBitsPerSecond}
+          />
           <SmallP>
-            In the simulation, mobile video is optimized to 360p quality. You
-            can set different values here to try out other optimizations. Find
-            common bit rates in{" "}
-            <A
-              target="_blank"
-              href="https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cvideo-codec-h%2Cbitrate"
-            >
-              YouTube's guide.
-            </A>
+            In the simulation, by default, mobile video is optimized to 360p
+            quality (H.265 encoding). You can set different values here.
           </SmallP>
         </Selector>
         <Selector>

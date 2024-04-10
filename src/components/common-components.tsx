@@ -59,6 +59,7 @@ export const P = styled.p`
 // eslint-disable-next-line react-refresh/only-export-components
 export const SmallP = styled(P)`
   ${theme.fontSize(-1)};
+  margin: ${theme.spacing(1)} 0 ${theme.spacing(3)} 0;
 `;
 
 // eslint-disable-next-line react-refresh/only-export-components

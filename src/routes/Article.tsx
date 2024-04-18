@@ -1,33 +1,26 @@
 import styled from "styled-components";
-import { breakpoints, theme } from "../theme";
-import Controls from "../components/Article/Controls";
 import {
   ArticleParamsContext,
   initialArticleSimulationParams,
 } from "../contexts/ArticleParamsContext";
 import { ArticleSimulationParams } from "../types";
 import { useState } from "react";
-import ArticleResults from "../components/Article/ArticleResults";
-import { P, SectionTitle } from "../components/common-components";
+import {
+  P,
+  SectionSubTitle,
+  SectionTitle,
+  TextContent,
+} from "../components/common-components";
 
 // interface PageProps {}
 
-const PageContainer = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 240px;
-  grid-column-gap: ${theme.spacing(5)};
-  padding: ${theme.spacing(4)};
+const ArticleContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   max-width: 1280px;
   margin: 0 auto;
-
-  @media (max-width: ${breakpoints.tablet}px) {
-    grid-template-columns: 100%;
-  }
-`;
-
-const PageIntro = styled.section`
   width: 100%;
-  max-width: 640px;
 `;
 
 const Article = () => {
@@ -46,25 +39,33 @@ const Article = () => {
     <ArticleParamsContext.Provider
       value={{ params, updateParams: setParamsHelper }}
     >
-      <PageContainer>
-        <PageIntro>
-          <SectionTitle>Online Article carbon calculator</SectionTitle>
+      <ArticleContainer>
+        <TextContent>
+          <SectionTitle>ReDime: A roadmap towards…</SectionTitle>
+          <P>Fact box: Tell readers there's a longer PDF available (link)</P>
+          <SectionTitle>
+            Future outlook of digital media & sustainability
+          </SectionTitle>
           <P>
-            Digital media is not emission free. With this calculator, you can
-            see how choices you make in publishing an article or streaming
-            content online affect its carbon frootprint. Green bars above
-            buttons indicate total carbon equivalent emissions from the choice.
+            Hyperintensification, low visibility of consequences, social media
+            and competition, AI (?), Advertising, lifecycle model of digital
+            media consumption, modes of degrowth.
           </P>
-          <P>
-            Carbon emissions are calculated by analyzing the energy consumption
-            related to device use, network, server, and data transfer.
-          </P>
-        </PageIntro>
-      </PageContainer>
-      <PageContainer>
-        <Controls />
-        <ArticleResults />
-      </PageContainer>
+          <SectionTitle>
+            Calculating the footprint of digital media
+          </SectionTitle>
+          <SectionSubTitle>
+            Present tools and how things are calculated (and Scope3)
+          </SectionSubTitle>
+          <SectionSubTitle>
+            Our calculations (the interactive part)
+          </SectionSubTitle>
+          <SectionSubTitle>Advertising impact</SectionSubTitle>
+          <SectionTitle>Future Scenarios</SectionTitle>
+          <P>A brief version of future scenarios in the tool</P>
+          <SectionTitle>Lead readers to the tool and the PDF</SectionTitle>
+        </TextContent>
+      </ArticleContainer>
     </ArticleParamsContext.Provider>
   );
 };

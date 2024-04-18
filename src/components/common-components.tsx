@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { theme } from "../theme";
 import { brighten } from "../util/colors";
 
+export const TextContent = styled.div`
+  width: 100%;
+  max-width: 640px;
+`;
+
 export const Selector = styled.div<{ horizontal?: boolean }>`
   margin-top: ${theme.spacing(2)};
   margin-bottom: ${theme.spacing(2)};
@@ -33,6 +38,11 @@ export const SelectorLabel = styled.label<{
 export const SectionTitle = styled.h2`
   ${theme.fontBold};
   ${theme.fontSize(2)};
+`;
+
+export const SectionSubTitle = styled.h3`
+  ${theme.fontBold};
+  ${theme.fontSize(1)};
 `;
 
 export const SubSectionTitle = styled.h3`

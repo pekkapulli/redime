@@ -44,26 +44,63 @@ const Article = () => {
           <SectionTitle>ReDime: A roadmap towards…</SectionTitle>
           <P>Fact box: Tell readers there's a longer PDF available (link)</P>
           <SectionTitle>
-            Future outlook of digital media & sustainability
+            Future outlook of digital media & sustainability: Background for the
+            report and the article.
           </SectionTitle>
           <P>
             Hyperintensification, low visibility of consequences, social media
             and competition, AI (?), Advertising, lifecycle model of digital
             media consumption, modes of degrowth.
           </P>
+          <P>Do we want pics or charts here?</P>
           <SectionTitle>
             Calculating the footprint of digital media
           </SectionTitle>
-          <SectionSubTitle>
-            Present tools and how things are calculated (and Scope3)
-          </SectionSubTitle>
+          <P>
+            For this project, we created two kinds of inputs for the researched
+            media companies: A calculator, and speculative prototypes. The
+            prototypes were open-ended, speculative, and provocative versions of
+            features and working models that could be implemented in media
+            products. The calculator aimed at shining a light on emissions
+            caused by digital products at a scale that is understandable and
+            concrete enough for a media company: a web article, with or without
+            media content.
+          </P>
+          <P>Present tools and how things are calculated (and Scope3)</P>
           <SectionSubTitle>
             Our calculations (the interactive part)
           </SectionSubTitle>
-          <SectionSubTitle>Advertising impact</SectionSubTitle>
+          <P>
+            The impact of an article, or any web content, consists of four
+            parts: device consumption, data consumption, network consumption,
+            and server consumption.
+          </P>
+          <P>
+            Researching the choices that media companies can make when
+            publishing content, we concluded that the energy required to
+            transfer…
+          </P>
+          <P>
+            <b>Content type</b>
+          </P>
+          <P>
+            <b>Video optimizing</b>
+          </P>
+          <P>
+            <b>Autoplay functionality</b>
+          </P>
+          <P>
+            <b>
+              Do we want secondary choices collected here or do we just point
+              the user to the calculator?
+            </b>
+          </P>
+          <SectionSubTitle>Advertising impact (?)</SectionSubTitle>
+          <SectionTitle>Workshops with media</SectionTitle>
+          <P>What did we learn in the media workshops?</P>
           <SectionTitle>Future Scenarios</SectionTitle>
           <P>A brief version of future scenarios in the tool</P>
-          <SectionTitle>Lead readers to the tool and the PDF</SectionTitle>
+          <P>Fact box repeated: Lead readers to the tool and the PDF</P>
         </TextContent>
       </ArticleContainer>
     </ArticleParamsContext.Provider>

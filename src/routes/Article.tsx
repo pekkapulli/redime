@@ -11,6 +11,7 @@ import {
   SectionTitle,
   TextContent,
 } from "../components/common-components";
+import { SingleCalculator } from "../components/SingleCalculator";
 
 // interface PageProps {}
 
@@ -81,6 +82,13 @@ const Article = () => {
             transfer…
           </P>
           <P>
+            <SingleCalculator
+              title="Video, audio, or text?"
+              details={`How content type affects an article's carbon footprint (${params.users.toLocaleString(
+                "fi-FI"
+              )} users)`}
+              type="contentType"
+            />
             <b>Content type</b>
           </P>
           <P>

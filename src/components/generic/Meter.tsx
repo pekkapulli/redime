@@ -15,7 +15,7 @@ const MeterContainer = styled.figure`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: ${theme.spacing(3)} 0;
+  margin: ${theme.spacing(1)} 0;
 `;
 
 const Bar = styled.rect`

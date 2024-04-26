@@ -3,13 +3,12 @@ import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
 import { P, SectionTitle, Spacer, SubSectionTitle } from "../common-components";
 import { useDeepMemo } from "../../util/useDeepMemo";
-import { simulateArticleFootprint } from "../../util/simulations";
+import { getResultCalculation } from "../../util/simulations";
 import Meter from "../generic/Meter";
 import { theme } from "../../theme";
 import {
   calculationParts,
   getCarbonKg,
-  getSimulationParts,
   getTotalComparisons,
 } from "../../util/calculationUtils";
 import Comparisons from "./Comparisons";
@@ -20,24 +19,10 @@ const ResultsContainer = styled.div``;
 const Results = () => {
   const { params } = useContext(ArticleParamsContext);
 
-  const { impact, totalCalculation, maxCarbonKg, maxComparisons } =
-    useDeepMemo(() => {
-      const impact = simulateArticleFootprint(params);
-      const totalCalculation = getSimulationParts(impact, "totalImpact");
-
-      const max = simulateArticleFootprint({
-        ...params,
-        autoplay: true,
-        contentType: "Video",
-        optimizeVideo: false,
-        percentageOfMobileUsers: 100,
-        percentageOfUsersPlayingStreamContent: 100,
-      });
-      const maxCarbonKg = getCarbonKg(max, "totalImpact");
-      const maxComparisons = getTotalComparisons(max);
-
-      return { impact, totalCalculation, maxCarbonKg, maxComparisons };
-    }, [params]);
+  const { impact, totalCalculation, maxCarbonKg, maxComparisons } = useDeepMemo(
+    () => getResultCalculation(params),
+    [params]
+  );
 
   if (params.users < 10) {
     return (

@@ -1,4 +1,3 @@
-import { ContentType, allContentTypes } from "../../types";
 import {
   A,
   Details,
@@ -20,11 +19,7 @@ import { getStreamedContentDescription } from "../../util/texts";
 import { ToggleableContent } from "../generic/ToggleableContent";
 import PresetSelector from "../generic/PresetSelector";
 import { DATA_SHARE_MAP } from "../../util/calculateImpact";
-
-const getOption = <T,>(option: T) => ({
-  label: option,
-  value: option,
-});
+import { ContentTypeSelector, OptimizeSelector } from "../ControlTypes";
 
 const ControlsContainer = styled.div`
   border-right: 1px solid ${theme.colors.grey(4)};
@@ -49,15 +44,7 @@ const Controls = () => {
       <SectionTitle>Choices made in article content</SectionTitle>
       <Selector>
         <SelectorLabel>Content type</SelectorLabel>
-        <OptionsSelector
-          options={allContentTypes.map(getOption<ContentType>)}
-          onChange={(newValue) =>
-            newValue !== null && updateParams({ contentType: newValue })
-          }
-          value={params.contentType}
-          params={params}
-          paramName="contentType"
-        />
+        <ContentTypeSelector params={params} updateParams={updateParams} />
         <P>
           The article's content type has the greatest effect on how much carbon
           is emitted. Video content produces so much transfer emissions that the
@@ -90,24 +77,7 @@ const Controls = () => {
           {params.contentType === "Video" && (
             <Selector>
               <SelectorLabel>Optimize video</SelectorLabel>
-              <OptionsSelector
-                options={[
-                  {
-                    label: "On",
-                    value: true,
-                  },
-                  {
-                    label: "Off",
-                    value: false,
-                  },
-                ]}
-                onChange={(newValue) =>
-                  updateParams({ optimizeVideo: newValue })
-                }
-                paramName="optimizeVideo"
-                params={params}
-                value={params.optimizeVideo}
-              />
+              <OptimizeSelector updateParams={updateParams} params={params} />
               <P>
                 E.g. YouTube has a data saver mode, and generally optimizes
                 video definition by network speed and device size. Here, for

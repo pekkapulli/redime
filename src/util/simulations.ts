@@ -5,7 +5,12 @@ import {
   calculatePageLoadImpact,
   calculatePageUseImpact,
 } from "./calculateImpact";
-import { combineCalculations } from "./calculationUtils";
+import {
+  combineCalculations,
+  getCarbonKg,
+  getSimulationParts,
+  getTotalComparisons,
+} from "./calculationUtils";
 
 type SimulationParam = "mobile" | "playsVideo";
 
@@ -122,4 +127,22 @@ export const simulateArticleFootprint = (
       impacts: { pageLoadImpact, pageUseImpact, totalImpact },
     };
   });
+};
+
+export const getResultCalculation = (params: ArticleSimulationParams) => {
+  const impact = simulateArticleFootprint(params);
+  const totalCalculation = getSimulationParts(impact, "totalImpact");
+
+  const max = simulateArticleFootprint({
+    ...params,
+    autoplay: true,
+    contentType: "Video",
+    optimizeVideo: false,
+    percentageOfMobileUsers: 100,
+    percentageOfUsersPlayingStreamContent: 100,
+  });
+  const maxCarbonKg = getCarbonKg(max, "totalImpact");
+  const maxComparisons = getTotalComparisons(max);
+
+  return { impact, totalCalculation, maxCarbonKg, maxComparisons };
 };

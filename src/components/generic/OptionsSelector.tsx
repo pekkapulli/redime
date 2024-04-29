@@ -25,7 +25,7 @@ interface OptionsSelectorProps<T> {
 const SelectorContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: ${theme.spacing(2)} 0;
+  margin: ${theme.spacing(0)} 0;
 `;
 
 const SelectItem = styled.div<{

@@ -13,13 +13,16 @@ import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
 import { breakpoints, theme } from "../../theme";
 import { NumberInput } from "../generic/NumberInput";
-import OptionsSelector from "../generic/OptionsSelector";
 import SliderInput from "../generic/SliderInput";
 import { getStreamedContentDescription } from "../../util/texts";
 import { ToggleableContent } from "../generic/ToggleableContent";
 import PresetSelector from "../generic/PresetSelector";
 import { DATA_SHARE_MAP } from "../../util/calculateImpact";
-import { ContentTypeSelector, OptimizeSelector } from "../ControlTypes";
+import {
+  AutoPlaySelector,
+  ContentTypeSelector,
+  OptimizeSelector,
+} from "../ControlTypes";
 
 const ControlsContainer = styled.div`
   border-right: 1px solid ${theme.colors.grey(4)};
@@ -88,22 +91,7 @@ const Controls = () => {
           )}
           <Selector>
             <SelectorLabel>Autoplay</SelectorLabel>
-            <OptionsSelector
-              options={[
-                {
-                  label: "On",
-                  value: true,
-                },
-                {
-                  label: "Off",
-                  value: false,
-                },
-              ]}
-              onChange={(newValue) => updateParams({ autoplay: newValue })}
-              paramName="autoplay"
-              params={params}
-              value={params.autoplay}
-            />
+            <AutoPlaySelector updateParams={updateParams} params={params} />
             <P>
               Playing the article's video automatically drastically reduces user
               choice on whether to play video content or not. Some users prefer

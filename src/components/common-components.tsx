@@ -45,14 +45,15 @@ export const SectionSubTitle = styled.h3`
   ${theme.fontSize(1)};
 `;
 
-export const SubSectionTitle = styled.h3`
-  ${theme.fontBold};
-  ${theme.fontSize(1)};
-`;
-
 export const GraphTitle = styled.h3`
   ${theme.fontBold};
   ${theme.fontSize(0)};
+`;
+
+export const SmallGraphTitle = styled.h4`
+  ${theme.fontBold};
+  ${theme.fontSize(-1)};
+  text-transform: uppercase;
 `;
 
 // eslint-disable-next-line react-refresh/only-export-components

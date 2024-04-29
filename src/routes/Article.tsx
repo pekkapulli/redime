@@ -6,12 +6,15 @@ import {
 import { ArticleSimulationParams } from "../types";
 import { useState } from "react";
 import {
+  GraphTitle,
   P,
   SectionSubTitle,
   SectionTitle,
   TextContent,
 } from "../components/common-components";
 import { SingleCalculator } from "../components/SingleCalculator";
+import { FactBox } from "../components/generic/FactBox";
+import { theme } from "../theme";
 
 // interface PageProps {}
 
@@ -22,6 +25,7 @@ const ArticleContainer = styled.section`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 ${theme.spacing(4)};
 `;
 
 const Article = () => {
@@ -42,8 +46,12 @@ const Article = () => {
     >
       <ArticleContainer>
         <TextContent>
-          <SectionTitle>ReDime: A roadmap towards…</SectionTitle>
-          <P>Fact box: Tell readers there's a longer PDF available (link)</P>
+          <FactBox>
+            <P>
+              This is an interactive online summary of []. Download the full PDF
+              report <a href="/">here</a>.
+            </P>
+          </FactBox>
           <SectionTitle>
             Future outlook of digital media & sustainability: Background for the
             report and the article.
@@ -81,28 +89,53 @@ const Article = () => {
             publishing content, we concluded that the energy required to
             transfer…
           </P>
+          <GraphTitle>Video, audio, or text?</GraphTitle>
           <P>
-            <SingleCalculator
-              title="Video, audio, or text?"
-              details={`How content type affects an article's carbon footprint (${params.users.toLocaleString(
-                "fi-FI"
-              )} users)`}
-              type="contentType"
-            />
-            <b>Content type</b>
+            The most obvious and impactful choice for a published article is
+            whether it has video content. We found that even audio content is
+            relatively green compared to any amount of video material being
+            streamed. Most of the emissions come from the last mile data
+            transfer over either 4G or 5G mobile networks, so no amount of
+            caching or server-side optimization will have a great effect.
           </P>
+          <SingleCalculator
+            details={`How content type affects an article's carbon footprint (${params.users.toLocaleString(
+              "fi-FI"
+            )} users):`}
+            type="contentType"
+          />
+          <GraphTitle>Video optimizing</GraphTitle>
           <P>
-            <b>Video optimizing</b>
+            Optimizing the video stream for the receiver’s screen size and
+            network is one effective way to cut emissions. By sending standard
+            definition (720p) content to mobile devices, around 25% of emissions
+            can already be saved compared to HD content.
           </P>
+          <SingleCalculator
+            details={`How video optimization for small devices affects the article carbon footprint (${params.users.toLocaleString(
+              "fi-FI"
+            )} users and ${params.streamContentLengthInMinutes.toLocaleString(
+              "fi-FI"
+            )} minutes of video):`}
+            type="optimization"
+          />
+          <GraphTitle>Autoplay functionality</GraphTitle>
           <P>
-            <b>Autoplay functionality</b>
+            Video might not be the user’s first choice when skimming through
+            text content such as news, but with the best ad revenue streams
+            coming from video ads, and competition against other hyperintesified
+            media, companies are pushed towards forcing the videos to play
+            automatically upon opening the article. If autoplay wasn’t on, a
+            significant amount of the data in news articles would be not loaded.
           </P>
-          <P>
-            <b>
-              Do we want secondary choices collected here or do we just point
-              the user to the calculator?
-            </b>
-          </P>
+          <SingleCalculator
+            details={`How removing autoplay might affect the article carbon footprint (${params.users.toLocaleString(
+              "fi-FI"
+            )} users and ${params.streamContentLengthInMinutes.toLocaleString(
+              "fi-FI"
+            )} minutes of video):`}
+            type="autoPlay"
+          />
           <SectionSubTitle>Advertising impact (?)</SectionSubTitle>
           <SectionTitle>Workshops with media</SectionTitle>
           <P>What did we learn in the media workshops?</P>

@@ -5,7 +5,7 @@ import {
 } from "../../util/withParentDimensions";
 import { scaleLinear } from "d3-scale";
 import { theme } from "../../theme";
-import { GraphTitle } from "../common-components";
+import { SmallGraphTitle } from "../common-components";
 import { Legend, LegendItem } from "./Legend";
 import { useState } from "react";
 import { brighten } from "../../util/colors";
@@ -107,7 +107,7 @@ const Meter = withParentDimensions(
 
     return (
       <MeterContainer>
-        <GraphTitle>{title}</GraphTitle>
+        <SmallGraphTitle>{title}</SmallGraphTitle>
         {width > 0 && (
           <svg width={width} height={height}>
             {maxValueLabel !== undefined && (

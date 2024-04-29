@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ArticleParamsContext } from "../../contexts/ArticleParamsContext";
-import { P, SectionTitle, Spacer, SubSectionTitle } from "../common-components";
+import { P, SectionSubTitle, SectionTitle, Spacer } from "../common-components";
 import { useDeepMemo } from "../../util/useDeepMemo";
 import { getResultCalculation } from "../../util/simulations";
 import Meter from "../generic/Meter";
@@ -80,7 +80,7 @@ const Results = () => {
           }))}
       />
       <Spacer />
-      <SubSectionTitle>Additional details</SubSectionTitle>
+      <SectionSubTitle>Additional details</SectionSubTitle>
       <Meter
         title="Emissions, mobile users"
         maxValue={maxCarbonKg}

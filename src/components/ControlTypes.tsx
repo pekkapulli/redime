@@ -52,3 +52,28 @@ export const OptimizeSelector = ({
     value={params.optimizeVideo}
   />
 );
+
+export const AutoPlaySelector = ({
+  params,
+  updateParams,
+}: {
+  params: ArticleSimulationParams;
+  updateParams: (params: Partial<ArticleSimulationParams>) => void;
+}) => (
+  <OptionsSelector
+    options={[
+      {
+        label: "On",
+        value: true,
+      },
+      {
+        label: "Off",
+        value: false,
+      },
+    ]}
+    onChange={(newValue) => updateParams({ autoplay: newValue })}
+    paramName="autoplay"
+    params={params}
+    value={params.autoplay}
+  />
+);

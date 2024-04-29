@@ -56,7 +56,7 @@ const Links = styled.nav`
   gap: ${theme.spacing(3)};
 `;
 
-const StyledLink = styled(Link)<{ selected: boolean }>`
+const NavigationLink = styled(Link)<{ selected: boolean }>`
   ${theme.fontSize(1)};
   ${theme.fontBold};
   color: ${theme.colors.black};
@@ -74,17 +74,17 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Title>ReDime: A Roadmap Towards Greener Digital Media</Title>
+        <Title>ReDime: A Roadmap Towards Resource-wise Digital Media</Title>
         <Links>
-          <StyledLink selected={location.pathname === "/"} to="/">
+          <NavigationLink selected={location.pathname === "/"} to="/">
             Article
-          </StyledLink>
-          <StyledLink
+          </NavigationLink>
+          <NavigationLink
             selected={location.pathname === "/calculator"}
             to="/calculator"
           >
             Calculator
-          </StyledLink>
+          </NavigationLink>
         </Links>
       </HeaderContent>
     </HeaderContainer>

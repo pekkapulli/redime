@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../theme";
 import { brighten } from "../util/colors";
+import { Link } from "react-router-dom";
 
 export const TextContent = styled.div`
   width: 100%;
@@ -75,6 +76,19 @@ export const SmallP = styled(P)`
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const A = styled.a`
+  ${theme.fontBold};
+  color: ${theme.colors.green};
+
+  &:hover {
+    color: ${brighten(theme.colors.green)};
+  }
+
+  &:visited {
+    color: ${theme.colors.green};
+  }
+`;
+
+export const StyledLink = styled(Link)`
   ${theme.fontBold};
   color: ${theme.colors.green};
 

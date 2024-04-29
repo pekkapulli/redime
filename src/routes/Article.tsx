@@ -10,6 +10,7 @@ import {
   P,
   SectionSubTitle,
   SectionTitle,
+  StyledLink,
   TextContent,
 } from "../components/common-components";
 import { SingleCalculator } from "../components/SingleCalculator";
@@ -25,7 +26,9 @@ const ArticleContainer = styled.section`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+  max-width: 100vw;
   padding: 0 ${theme.spacing(4)};
+  box-sizing: border-box;
 `;
 
 const Article = () => {
@@ -62,6 +65,7 @@ const Article = () => {
             media consumption, modes of degrowth.
           </P>
           <P>Do we want pics or charts here?</P>
+
           <SectionTitle>
             Calculating the footprint of digital media
           </SectionTitle>
@@ -76,18 +80,13 @@ const Article = () => {
             media content.
           </P>
           <P>Present tools and how things are calculated (and Scope3)</P>
-          <SectionSubTitle>
-            Our calculations (the interactive part)
-          </SectionSubTitle>
+          <SectionSubTitle>The ReDime calculator explained</SectionSubTitle>
           <P>
             The impact of an article, or any web content, consists of four
             parts: device consumption, data consumption, network consumption,
-            and server consumption.
-          </P>
-          <P>
-            Researching the choices that media companies can make when
-            publishing content, we concluded that the energy required to
-            transfer…
+            and server consumption. You can use the full calculator on the{" "}
+            <StyledLink to="/calculator">calculator page</StyledLink>, but we
+            will explain the reasoning for the main choices below.
           </P>
           <GraphTitle>Video, audio, or text?</GraphTitle>
           <P>

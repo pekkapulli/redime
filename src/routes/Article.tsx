@@ -52,20 +52,39 @@ const Article = () => {
           <FactBox>
             <P>
               This is an interactive online summary of []. Download the full PDF
-              report <a href="/">here</a>.
+              report <a href="/">here</a> for more details.
             </P>
           </FactBox>
           <SectionTitle>
-            Future outlook of digital media & sustainability: Background for the
-            report and the article.
+            Future outlook of digital media & sustainability
           </SectionTitle>
           <P>
-            Hyperintensification, low visibility of consequences, social media
-            and competition, AI (?), Advertising, lifecycle model of digital
-            media consumption, modes of degrowth.
+            Digitalisation is often portrayed as the eco-friendly solution, even
+            though digital solutions have an increasingly large carbon
+            footprint. In the ReDime research project, we studied the views,
+            ways of speaking, and practices the producers of digital media have
+            about the eco-friendliness of media consumption and digital
+            technology.
           </P>
-          <P>Do we want pics or charts here?</P>
-
+          <P>
+            According to Statistics Finland, Finns spent four hours per day on
+            average in front of different screens in 2021, and the trend is
+            growing. Additionally, the amount of content and its intensity are
+            growing: the yearly data consumption for an average mobile
+            subscription in OECD countries has grown by 28 percent from 2022 to
+            2023 (OECD, 2024).
+          </P>
+          <P>
+            The ICT sector contributes to roughly 2-4 % of global carbon
+            emissions, which already makes it a bigger emitter than the airline
+            industry (at 2 %). Some estimates predict the ICT sector will emit
+            14 % of global emissions by year 2040. The emissions are largely
+            invisible and abstract to the consumer, which makes limiting them at
+            the customer end very hard. Yet, these “scope 3 emissions” that are
+            caused downstream from the media companies themselves, combine to
+            around 90 % of all their emissions. Where does the responsibility
+            for greener consumption lie, then?
+          </P>
           <SectionTitle>
             Calculating the footprint of digital media
           </SectionTitle>
@@ -79,7 +98,6 @@ const Article = () => {
             concrete enough for a media company: a web article, with or without
             media content.
           </P>
-          <P>Present tools and how things are calculated (and Scope3)</P>
           <SectionSubTitle>The ReDime calculator explained</SectionSubTitle>
           <P>
             The impact of an article, or any web content, consists of four

@@ -7,6 +7,7 @@ import coverPhoto from "/cover.jpg";
 const HeaderContainer = styled.header`
   width: 100%;
   height: 75vh;
+  min-height: 300px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,10 +22,10 @@ const HeaderContent = styled.div`
   height: 100%;
   box-sizing: border-box;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   max-width: 1280px;
-  padding: ${theme.spacing(8)} ${theme.spacing(4)} ${theme.spacing(4)}
+  padding: ${theme.spacing(5)} ${theme.spacing(4)} ${theme.spacing(4)}
     ${theme.spacing(4)};
   width: 100%;
   gap: 8px;
@@ -36,14 +37,23 @@ const HeaderContent = styled.div`
 
 const Title = styled.h1`
   color: ${theme.colors.black};
-  ${theme.fontSize(3)};
+  ${theme.fontSize(4)};
   ${theme.fontBold};
   margin: ${theme.spacing(4)} auto;
   text-align: center;
   max-width: 480px;
 
+  @media (max-width: ${breakpoints.tablet}px) {
+    ${theme.fontSize(3)};
+  }
+
   @media (max-width: ${breakpoints.mobile}px) {
     ${theme.fontSize(2)};
+  }
+
+  @media (min-width: ${breakpoints.desktop}px) {
+    ${theme.fontSize(5)};
+    max-width: 720px;
   }
 `;
 

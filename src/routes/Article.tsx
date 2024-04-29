@@ -56,7 +56,7 @@ const Article = () => {
             </P>
           </FactBox>
           <SectionTitle>
-            Future outlook of digital media & sustainability
+            Future outlook of digital media sustainability
           </SectionTitle>
           <P>
             Digitalisation is often portrayed as the eco-friendly solution, even

@@ -44,7 +44,8 @@ const Article = () => {
     }));
   };
 
-  const pdfUrl = "/";
+  const pdfUrl =
+    "https://blogs.helsinki.fi/smlaakso/files/2024/04/ReDime-report-v1.pdf";
 
   return (
     <ArticleParamsContext.Provider

@@ -17,6 +17,7 @@ import {
 import { SingleCalculator } from "../components/SingleCalculator";
 import { FactBox } from "../components/generic/FactBox";
 import { theme } from "../theme";
+import { Scenarios } from "../components/Scenarios";
 
 // interface PageProps {}
 
@@ -203,29 +204,27 @@ const Article = () => {
             towards greener digital media.
           </P>
 
-          <SectionSubTitle>Scenarios coming soon!</SectionSubTitle>
+          <Scenarios />
 
-          <FactBox>
-            <P>
-              In the ReDime research project, we studied the views, discourses,
-              and practices of digital media producers regarding the
-              sustainability of media consumption and digital technology. In
-              addition, we sought to find ways to make the carbon footprint of
-              digital media services more visible. The research project was
-              conducted in 2023-2024 at the Centre for Consumer Society Research
-              at the University of Helsinki and Funded by the Media Industry
-              Research Foundation of Finland. Download the full PDF report{" "}
-              <A href={pdfUrl}>here</A>. Team members: Salla-Maaria Laaksonen,
-              Meri Frig, Pekka Pulli, Erjon Skenderi, and Selma Suppanen.
-            </P>
-            <P>
-              Original tree photo by{" "}
-              <A href="https://unsplash.com/@niko_photos?utm_content=creditCopyText">
-                niko photos
-              </A>{" "}
-              on Unsplash.
-            </P>
-          </FactBox>
+          <P>
+            In the ReDime research project, we studied the views, discourses,
+            and practices of digital media producers regarding the
+            sustainability of media consumption and digital technology. In
+            addition, we sought to find ways to make the carbon footprint of
+            digital media services more visible. The research project was
+            conducted in 2023-2024 at the Centre for Consumer Society Research
+            at the University of Helsinki and Funded by the Media Industry
+            Research Foundation of Finland. Download the full PDF report{" "}
+            <A href={pdfUrl}>here</A>. Team members: Salla-Maaria Laaksonen,
+            Meri Frig, Pekka Pulli, Erjon Skenderi, and Selma Suppanen.
+          </P>
+          <P>
+            Original tree photo by{" "}
+            <A href="https://unsplash.com/@niko_photos?utm_content=creditCopyText">
+              niko photos
+            </A>{" "}
+            on Unsplash.
+          </P>
         </TextContent>
       </ArticleContainer>
     </ArticleParamsContext.Provider>

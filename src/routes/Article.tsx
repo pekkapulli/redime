@@ -202,6 +202,8 @@ const Article = () => {
             towards greener digital media.
           </P>
 
+          <SectionSubTitle>Scenarios coming soon!</SectionSubTitle>
+
           <FactBox>
             <P>
               In the ReDime research project, we studied the views, discourses,

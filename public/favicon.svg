@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="174px" height="180px" viewBox="0 0 174 180" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>3 copy</title>
+    <g id="3-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="174" height="180"></rect>
+        <path d="M50.2989691,82 C39.606975,81.7989583 31,73.069561 31,62.3298969 C31,52.1965685 38.6625511,43.8529248 48.5095207,42.7770985 C48.2221723,41.1732337 48.0721649,39.5216607 48.0721649,37.8350515 C48.0721649,22.4621771 60.534342,10 75.9072165,10 C87.1929869,10 96.9100233,16.7165488 101.279133,26.3704538 C102.621839,25.8646728 104.077535,25.5876289 105.597938,25.5876289 C112.071647,25.5876289 117.372241,30.6103304 117.815381,36.9713952 C118.914122,36.806749 120.039906,36.7216495 121.185567,36.7216495 C133.688838,36.7216495 143.824742,46.8575535 143.824742,59.3608247 C143.824742,71.7400556 133.88895,81.7986578 121.556982,81.9970149 L50.2989691,82 Z" id="Path" fill="#789D36"></path>
+        <path d="M98,85 L114,113 L102,113 L102,144 L94,144 L94,113 L82,113 L98,85 Z" id="Combined-Shape" fill="#789D36"></path>
+        <path d="M75,85 L91,113 L78.999,113 L79,144 L71,144 L70.999,113 L59,113 L75,85 Z" id="Combined-Shape-Copy" fill="#789D36" transform="translate(75, 114.5) rotate(-180) translate(-75, -114.5)"></path>
+        <rect id="Rectangle" fill="#789D36" x="57" y="149" width="28" height="3"></rect>
+        <rect id="Rectangle-Copy-6" fill="#789D36" x="54" y="170" width="28" height="3"></rect>
+        <rect id="Rectangle-Copy-7" fill="#789D36" x="58" y="160" width="28" height="3"></rect>
+        <rect id="Rectangle-Copy" fill="#789D36" x="86" y="154" width="28" height="3"></rect>
+        <rect id="Rectangle-Copy-4" fill="#789D36" x="91" y="160" width="28" height="3"></rect>
+        <rect id="Rectangle-Copy-5" fill="#789D36" x="80" y="165" width="28" height="3"></rect>
+        <path d="M118,151 L118,151.7 L118.161165,151.539845 L137.960155,171.338835 L135.838835,173.460155 L116.378,154 L90,154 L90,151 L118,151 Z" id="Combined-Shape" fill="#789D36" transform="translate(113.9801, 162.2301) scale(-1, 1) rotate(-180) translate(-113.9801, -162.2301)"></path>
+        <path d="M62,154 L62,154.7 L62.1611652,154.539845 L81.9601551,174.338835 L79.8388348,176.460155 L60.378,157 L34,157 L34,154 L62,154 Z" id="Combined-Shape-Copy-2" fill="#789D36" transform="translate(57.9801, 165.2301) scale(-1, 1) translate(-57.9801, -165.2301)"></path>
+    </g>
+</svg>

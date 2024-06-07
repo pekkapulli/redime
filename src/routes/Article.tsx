@@ -45,8 +45,8 @@ const Article = () => {
     }));
   };
 
-  const pdfUrl =
-    "https://blogs.helsinki.fi/smlaakso/files/2024/04/ReDime-report-v1.pdf";
+  // const pdfUrl =
+  //   "https://blogs.helsinki.fi/smlaakso/files/2024/04/ReDime-report-v1.pdf";
 
   return (
     <ArticleParamsContext.Provider
@@ -58,7 +58,7 @@ const Article = () => {
             <P>
               This is an interactive online summary of the final report of the
               research project Redime: Roadmap towards resource-wise digital
-              media. Download the full PDF report <A href={pdfUrl}>here</A>.
+              media. Full PDF report coming soon.
             </P>
           </FactBox>
           <SectionTitle>
@@ -214,9 +214,9 @@ const Article = () => {
             digital media services more visible. The research project was
             conducted in 2023-2024 at the Centre for Consumer Society Research
             at the University of Helsinki and Funded by the Media Industry
-            Research Foundation of Finland. Download the full PDF report{" "}
-            <A href={pdfUrl}>here</A>. Team members: Salla-Maaria Laaksonen,
-            Meri Frig, Pekka Pulli, Erjon Skenderi, and Selma Suppanen.
+            Research Foundation of Finland. Full PDF report coming soon. Team
+            members: Salla-Maaria Laaksonen, Meri Frig, Pekka Pulli, Erjon
+            Skenderi, and Selma Suppanen.
           </P>
           <P>
             Original tree photo by{" "}

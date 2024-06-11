@@ -96,11 +96,11 @@ const SliderInput = (props: SliderInputProps) => {
                   hoveredValue === step.step
                     ? brighten(
                         step.step === value
-                          ? theme.colors.green
+                          ? theme.colors.darkGreen
                           : theme.colors.grey(3)
                       )
                     : step.step === value
-                    ? theme.colors.green
+                    ? theme.colors.darkGreen
                     : theme.colors.grey(3),
               }}
               $widthPercentage={100 / stepsWithImpact.length}

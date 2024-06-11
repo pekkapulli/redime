@@ -113,11 +113,11 @@ const OptionsSelector = <T extends string | boolean>(
                   hoveredValue === o.value
                     ? brighten(
                         o.value === value
-                          ? theme.colors.green
+                          ? theme.colors.darkGreen
                           : theme.colors.grey(3)
                       )
                     : o.value === value
-                    ? theme.colors.green
+                    ? theme.colors.darkGreen
                     : theme.colors.grey(3),
               }}
             />

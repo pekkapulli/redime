@@ -77,27 +77,27 @@ export const SmallP = styled(P)`
 // eslint-disable-next-line react-refresh/only-export-components
 export const A = styled.a`
   ${theme.fontBold};
-  color: ${theme.colors.green};
+  color: ${theme.colors.darkGreen};
 
   &:hover {
-    color: ${brighten(theme.colors.green)};
+    color: ${brighten(theme.colors.darkGreen)};
   }
 
   &:visited {
-    color: ${theme.colors.green};
+    color: ${theme.colors.darkGreen};
   }
 `;
 
 export const StyledLink = styled(Link)`
   ${theme.fontBold};
-  color: ${theme.colors.green};
+  color: ${theme.colors.darkGreen};
 
   &:hover {
-    color: ${brighten(theme.colors.green)};
+    color: ${brighten(theme.colors.darkGreen)};
   }
 
   &:visited {
-    color: ${theme.colors.green};
+    color: ${theme.colors.darkGreen};
   }
 `;
 

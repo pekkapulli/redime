@@ -31,10 +31,10 @@ const grey = (step: number): string => {
 export const colors = {
   black: "black",
   white: "#ffffff",
-  green: "#5BA196",
+  green: "#488B96",
   darkGreen: "#225C53",
   grey,
-  categories: ["#225C53", grey(2), "#5BA196", grey(0)],
+  categories: ["#225C53", grey(2), "#488B96", grey(0)],
 };
 
 export const theme = {

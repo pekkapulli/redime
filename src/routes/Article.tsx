@@ -19,8 +19,6 @@ import { FactBox } from "../components/generic/FactBox";
 import { theme } from "../theme";
 import { Scenarios } from "../components/Scenarios";
 
-// interface PageProps {}
-
 const ArticleContainer = styled.section`
   display: flex;
   flex-direction: column;
@@ -65,44 +63,44 @@ const Article = () => {
             Future outlook of digital media sustainability
           </SectionTitle>
           <P>
-            Digitalisation is often portrayed as a sustainable and green
-            solution, but digital services themselves have an increasingly large
-            carbon footprint. Although we know that excessive consumption is
-            generally at the heart of the climate crisis, consumption of digital
-            services is typically perceived as intangible and therefore
-            low-carbon consumption despite its growing rate and intensity.
-            Furthermore, there is very little public or consumer awareness of
-            the environmental aspects of digital media consumption and
-            production.
+            Digitalization is often portrayed as a sustainable and green
+            solution, but digital services have an increasingly large
+            environmental footprint. Although we know that excessive consumption
+            is generally at the heart of the climate crisis, consumption of
+            digital services is typically perceived as intangible and therefore
+            as a low-carbon alternative despite its growing rate and intensity.
+            There is very little public or consumer awareness of the
+            environmental aspects of digital media consumption and production.
           </P>
           <P>
             Digital media consumption is growing rapidly, and the content
             formats are increasingly data-intensive. Therefore it is essential
             to understand the overall environmental burden and the environmental
-            impact of different digital media consumption patterns. For an
+            impact of digital media consumption patterns at scale. For an
             individual consumer, the contribution of digital media consumption
             to their overall carbon footprint is unlikely to be significant, but
             at the same time, for example, 162 million Eurovision Song Contest
             streamers together produce a much larger carbon footprint.
           </P>
           <P>
-            Emissions and waste result not only from direct electricity
-            consumption, but also from the server infrastructure, data centres,
-            network maintenance, and end-user equipment required by digital
-            technologies. The digital ecosystem is complex and the resources it
-            consumes are difficult to calculate and model. Currently, the ICT
-            sector is estimated to contribute roughly 2-4 % of global carbon
-            emissions, which makes it a bigger emitter than the airline industry
-            (at 2 %). Some estimates predict that the share of the ICT sector
-            will grow to 14 % of global emissions by the year 2040.
+            Emissions and electronic waste result not only from direct
+            electricity consumption, but also from the server infrastructure,
+            data centers, network maintenance, and end-user equipment required
+            by digital technologies. The digital ecosystem is complex and the
+            resources it consumes are difficult to calculate and model.
+            Currently, the ICT sector is estimated to contribute roughly 2-4 %
+            of global carbon emissions, which makes it a bigger emitter than the
+            airline industry (at 2 %). Some estimates predict that the share of
+            the ICT sector will grow to 14 % of global emissions by the year
+            2040.
           </P>
           <P>
-            This energy consumption and related emissions are largely invisible
-            and abstract to the consumer, which makes limiting them at the
-            customer end very hard. Yet, the downstream emissions resulting from
-            media product use combine to around 90 % of all the emissions of
-            media companies. Where does the responsibility for greener
-            consumption lie, then?
+            Yet, the energy consumption and related emissions from digital media
+            are largely invisible and abstract to the consumer, which makes
+            limiting them at the customer end very hard. Yet, the downstream
+            emissions resulting from media product use combine to around 90 % of
+            all the emissions by media companies. Where does the responsibility
+            for greener consumption lie, then?
           </P>
           <SectionTitle>
             Calculating the footprint of digital media
@@ -135,7 +133,7 @@ const Article = () => {
             can observe from the impact per source bar, most of the emissions
             come from the last mile of data transfer over either 4G or 5G mobile
             networks, so caching or server-side optimization will not have a
-            great effect.
+            large effect.
           </P>
           <SingleCalculator
             details={`How content type affects an article's carbon footprint (${params.users.toLocaleString(
@@ -148,8 +146,8 @@ const Article = () => {
             Optimizing the video stream for the receiver’s screen size and
             network is an effective way to cut emissions. By sending standard
             definition (720p) content to mobile devices, around 25% of emissions
-            can be saved compared to HD content, which typically is unecessarily
-            high quality for the mobile screen.
+            can be saved compared to HD content, which typically is
+            unnecessarily high quality for a mobile screen.
           </P>
           <SingleCalculator
             details={`How video optimization for small devices affects the article carbon footprint (${params.users.toLocaleString(
@@ -166,8 +164,7 @@ const Article = () => {
             coming from video ads, and competition against other hyperintesified
             media, companies are pushed towards forcing the videos to play
             automatically upon opening the article. If autoplay is not on, a
-            significant share of the data in news articles might not have to be
-            loaded.
+            significant share of the data in news articles would not be loaded.
           </P>
           <SingleCalculator
             details={`How removing autoplay might affect the article carbon footprint (${params.users.toLocaleString(
@@ -179,16 +176,16 @@ const Article = () => {
           />
           <SectionTitle>Future Scenarios</SectionTitle>
           <P>
-            The conventional wisdom of digitalisation as an intangible carbon
-            sink is strong, and critical discourse typically translates slowly
-            and awkwardly into behavioural change. From a technology design
-            perspective, an interesting question is whether digital media
-            services can be designed so that they would raise environmental
-            concerns about their use in the context of their use, and encourage
-            consumers to use them in a more environmentally friendly way. What
-            "greener" choices could be offered to media consumers, while
-            recognising that responsibility for more sustainable consumption
-            cannot be shifted entirely to the consumer?
+            The conventional wisdom of digitalization as an intangible and
+            low-carbon activity is strong, and critical discourse typically
+            translates slowly and awkwardly into behavioral change. From a
+            technology design perspective, an interesting question is whether
+            digital media services can be designed so that they would raise
+            environmental concerns about their use in the context of their use,
+            and encourage consumers to use them in a more environmentally
+            friendly way. What "greener" choices could be offered to media
+            consumers, while recognizing that responsibility for more
+            sustainable consumption cannot be shifted to them entirely?
           </P>
           <P>
             To answer these questions we conducted workshops and interviews with
@@ -215,8 +212,8 @@ const Article = () => {
             conducted in 2023-2024 at the Centre for Consumer Society Research
             at the University of Helsinki and Funded by the Media Industry
             Research Foundation of Finland. Full PDF report coming soon. Team
-            members: Salla-Maaria Laaksonen, Meri Frig, Pekka Pulli, Erjon
-            Skenderi, and Selma Suppanen.
+            members: Salla-Maaria Laaksonen, Meri Frig, Pekka Pulli,Erjon
+            Skenderi and Selma Suppanen.
           </P>
           <P>
             Original tree photo by{" "}

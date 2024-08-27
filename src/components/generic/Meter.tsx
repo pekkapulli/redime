@@ -101,7 +101,7 @@ const Meter = withParentDimensions(
       }
     );
 
-    const label = `${totalValue.toLocaleString("fi-FI", {
+    const label = `${totalValue.toLocaleString("en-GB", {
       maximumFractionDigits: 3,
     })} ${unit}`;
 
@@ -148,7 +148,7 @@ const Meter = withParentDimensions(
                       x2={x}
                     />
                     <Tick x={x} y={margins.top + barHeight + 18}>
-                      {t.toLocaleString("fi-FI", { maximumFractionDigits: 2 })}
+                      {t.toLocaleString("en-GB", { maximumFractionDigits: 2 })}
                     </Tick>
                   </g>
                 )
@@ -193,7 +193,7 @@ const Meter = withParentDimensions(
               onMouseEnter={() => setHoveredLabel(v.label)}
               onMouseLeave={() => setHoveredLabel(undefined)}
             >
-              {v.value.toLocaleString("fi-FI", { maximumFractionDigits: 2 })} kg{" "}
+              {v.value.toLocaleString("en-GB", { maximumFractionDigits: 2 })} kg{" "}
               {v.label}
             </LegendItem>
           ))}

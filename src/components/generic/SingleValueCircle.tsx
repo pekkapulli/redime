@@ -54,7 +54,7 @@ const SingleValueCircle = withParentDimensions(
         </svg>
         {unit && (
           <Value>
-            {value.toLocaleString("fi-FI", { maximumFractionDigits: 1 })} {unit}
+            {value.toLocaleString("en-GB", { maximumFractionDigits: 1 })} {unit}
           </Value>
         )}
       </SingleValueCircleContainer>

@@ -141,7 +141,7 @@ const Article = () => {
           </P>
           <SingleCalculator
             details={`How content type affects an article's carbon footprint (${params.users.toLocaleString(
-              "fi-FI"
+              "en-GB"
             )} users):`}
             type="contentType"
           />
@@ -155,9 +155,9 @@ const Article = () => {
           </P>
           <SingleCalculator
             details={`How video optimization for small devices affects the article carbon footprint (${params.users.toLocaleString(
-              "fi-FI"
+              "en-GB"
             )} users and ${params.streamContentLengthInMinutes.toLocaleString(
-              "fi-FI"
+              "en-GB"
             )} minutes of video):`}
             type="optimization"
           />
@@ -172,9 +172,9 @@ const Article = () => {
           </P>
           <SingleCalculator
             details={`How removing autoplay might affect the article carbon footprint (${params.users.toLocaleString(
-              "fi-FI"
+              "en-GB"
             )} users and ${params.streamContentLengthInMinutes.toLocaleString(
-              "fi-FI"
+              "en-GB"
             )} minutes of video):`}
             type="autoPlay"
           />

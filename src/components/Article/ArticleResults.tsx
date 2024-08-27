@@ -42,7 +42,7 @@ const Results = () => {
       <Meter
         title="CO₂ equivalent emissions"
         maxValue={maxCarbonKg}
-        // maxValueLabel={`Max with ${params.users.toLocaleString("fi-FI")} users${
+        // maxValueLabel={`Max with ${params.users.toLocaleString("en-GB")} users${
         //   params.contentType !== "Text"
         //     ? ` and ${
         //         params.streamContentLengthInMinutes

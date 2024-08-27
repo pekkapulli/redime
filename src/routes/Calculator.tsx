@@ -53,7 +53,8 @@ const Article = () => {
             Digital media is not emission free. With this calculator, you can
             see how choices you make in publishing an article or streaming
             content online affect its carbon frootprint. Green bars above
-            buttons indicate total carbon equivalent emissions from the choice.
+            buttons indicate total carbon equivalent emissions resulting from
+            the choice.
           </P>
           <P>
             Carbon emissions are calculated by analyzing the energy consumption

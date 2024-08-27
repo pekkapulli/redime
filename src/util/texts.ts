@@ -1,7 +1,7 @@
 import { Calculation, ContentType } from "../types";
 
 export const getStreamedContentDescription = (contentType: ContentType) =>
-  contentType.toLocaleLowerCase("fi-FI");
+  contentType.toLocaleLowerCase("en-GB");
 
 export const getLabel = (type: keyof Calculation) => {
   switch (type) {
